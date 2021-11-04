@@ -1,7 +1,6 @@
 package ar.com.wolox.android.bootstrap.model
 
 import com.google.gson.annotations.SerializedName
-import com.squareup.moshi.Json
 import java.io.Serializable
 
 data class Post(
