@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import ar.com.wolox.android.bootstrap.databinding.FragmentPostsBinding
 import ar.com.wolox.android.bootstrap.ui.base.BaseFragment
@@ -28,9 +27,11 @@ class PostsFragment: BaseFragment() {
     }
 
     private fun getPosts() {
-        viewModel.getPosts()
-        viewModel.posts.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), it.first().body, Toast.LENGTH_LONG).show()
+        viewModel.apply {
+            getPosts()
+            posts.observe(viewLifecycleOwner) {
+                // Handle response
+            }
         }
     }
 

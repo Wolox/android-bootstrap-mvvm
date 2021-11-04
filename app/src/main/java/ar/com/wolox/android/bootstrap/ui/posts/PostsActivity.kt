@@ -11,9 +11,6 @@ class PostsActivity: BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragmentContainer, PostsFragment.newInstance())
-            .commit()
+        replaceFragment(PostsFragment.newInstance())
     }
 }
