@@ -1,7 +1,6 @@
 package ar.com.wolox.android.bootstrap.di
 
 import ar.com.wolox.android.bootstrap.BuildConfig
-import ar.com.wolox.android.bootstrap.repository.PostRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,7 +9,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module

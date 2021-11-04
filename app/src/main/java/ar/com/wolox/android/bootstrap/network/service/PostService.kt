@@ -1,4 +1,4 @@
-package ar.com.wolox.android.bootstrap.network
+package ar.com.wolox.android.bootstrap.network.service
 
 import ar.com.wolox.android.bootstrap.model.Post
 import retrofit2.Response
