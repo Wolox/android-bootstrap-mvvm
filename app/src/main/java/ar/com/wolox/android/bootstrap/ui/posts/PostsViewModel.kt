@@ -7,14 +7,13 @@ import ar.com.wolox.android.bootstrap.model.Post
 import ar.com.wolox.android.bootstrap.network.repository.PostRepository
 import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 import ar.com.wolox.android.bootstrap.ui.base.BaseViewModel
-import ar.com.wolox.android.bootstrap.utils.SharedPreferencesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PostsViewModel @Inject constructor(
-    private val postsRepository: PostRepository
+    private val postsRepository: PostRepository,
 ) : BaseViewModel() {
 
     private val _posts = MutableLiveData<List<Post>>()

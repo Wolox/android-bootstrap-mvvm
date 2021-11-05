@@ -1,17 +1,10 @@
 package ar.com.wolox.android.bootstrap.utils
 
-import android.content.Context
-import ar.com.wolox.android.bootstrap.R
-import dagger.hilt.android.qualifiers.ApplicationContext
+import android.content.SharedPreferences
 import javax.inject.Inject
 
 // TODO: Move this class to Wolmo.
-class SharedPreferencesManager @Inject constructor(@ApplicationContext context: Context) {
-
-    private val sharedPreferences = context.getSharedPreferences(
-        context.getString(R.string.default_shared_preferences_name, context.packageName),
-        Context.MODE_PRIVATE
-    )
+class SharedPreferencesManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
 
     fun store(key: String, value: String?) = sharedPreferences.edit().putString(key, value).apply()
 
