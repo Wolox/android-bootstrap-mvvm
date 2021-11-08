@@ -1,21 +1,21 @@
 package ar.com.wolox.android.bootstrap.ui.login
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import ar.com.wolox.android.bootstrap.model.User
+import ar.com.wolox.android.bootstrap.Constants
 import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 import ar.com.wolox.android.bootstrap.repository.UserRepository
 import ar.com.wolox.android.bootstrap.ui.base.BaseViewModel
+import ar.com.wolox.android.bootstrap.utils.SharedPreferencesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val sharedPreferencesManager: SharedPreferencesManager
 ): BaseViewModel() {
 
     val inputErrors = arrayListOf<InputError>()
@@ -33,6 +33,7 @@ class LoginViewModel @Inject constructor(
                     val userExists = response.body()!!.any { it.username == username }
                     if (userExists) {
                         _login.value = LoginResponse.SUCCESS
+                        sharedPreferencesManager.store(Constants.USER_IS_LOGGED_KEY, true)
                     } else {
                         _login.value = LoginResponse.INVALID_CREDENTIALS
                     }
