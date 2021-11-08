@@ -1,6 +1,7 @@
 package ar.com.wolox.android.bootstrap.di
 
 import ar.com.wolox.android.bootstrap.network.service.PostService
+import ar.com.wolox.android.bootstrap.network.service.UserService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,9 +10,13 @@ import retrofit2.Retrofit
 
 @Module
 @InstallIn(SingletonComponent::class)
-class PostsApiModule {
+class ApiModule {
 
     @Provides
-    fun providePostsApi(retrofit: Retrofit): PostService =
+    fun providePostsService(retrofit: Retrofit): PostService =
         retrofit.create(PostService::class.java)
+
+    @Provides
+    fun provideUsersService(retrofit: Retrofit): UserService =
+        retrofit.create(UserService::class.java)
 }
