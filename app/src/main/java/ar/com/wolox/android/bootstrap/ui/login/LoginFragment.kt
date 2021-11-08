@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
+import ar.com.wolox.android.bootstrap.R
 import ar.com.wolox.android.bootstrap.databinding.FragmentLoginBinding
 import ar.com.wolox.android.bootstrap.ui.base.BaseFragment
 import ar.com.wolox.android.bootstrap.ui.posts.PostsActivity
+import ar.com.wolox.android.bootstrap.utils.SnackbarFactory
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,11 +59,11 @@ class LoginFragment: BaseFragment(), LoginView {
 
 
     override fun showEmptyUsernameError() {
-        binding.usernameInput.error = "Username must not be empty"
+        binding.usernameInput.error = getString(R.string.empty_username_error)
     }
 
     override fun showEmptyPasswordError() {
-        binding.passwordInput.error = "Password must not be empty"
+        binding.passwordInput.error = getString(R.string.empty_password_error)
     }
 
     override fun showInvalidInputError() {
@@ -71,20 +73,11 @@ class LoginFragment: BaseFragment(), LoginView {
     }
 
     override fun showInvalidCredentialsError() {
-        val snackbar = Snackbar.make(
-            binding.loginButton,
-            "Invalid credentials",
-            Snackbar.LENGTH_LONG,
-        ).run {
-            setAction("Aceptar") {
-                dismiss()
-            }
-            show()
-        }
+        SnackbarFactory.create(binding.loginButton, getString(R.string.invalid_credentials), getString(R.string.ok))
     }
 
     override fun showServerError() {
-        Toast.makeText(requireContext(), "Server error", Toast.LENGTH_SHORT).show()
+        SnackbarFactory.create(binding.loginButton, getString(R.string.server_error), getString(R.string.ok))
     }
 
     override fun goToWoloxSite() = with(Intent(Intent.ACTION_VIEW, WOLOX_URL.toUri())) {
@@ -98,7 +91,7 @@ class LoginFragment: BaseFragment(), LoginView {
     }
 
     companion object {
-        const val WOLOX_URL = "https://www.wolox.co"
+        const val WOLOX_URL = "https://www.wolox.com.ar"
         fun newInstance() = LoginFragment()
     }
 }
