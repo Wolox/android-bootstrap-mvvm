@@ -16,9 +16,10 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val sharedPreferencesManager: SharedPreferencesManager
-): BaseViewModel() {
+): BaseViewModel<LoginView>() {
 
     val inputErrors = arrayListOf<InputError>()
+
     private val _login = MutableLiveData<LoginResponse>()
     val login: LiveData<LoginResponse>
         get() = _login
