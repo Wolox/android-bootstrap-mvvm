@@ -1,6 +1,6 @@
 package ar.com.wolox.android.bootstrap.di
 
-import ar.com.wolox.android.bootstrap.network.PostService
+import ar.com.wolox.android.bootstrap.network.service.PostService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -4,27 +4,35 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import ar.com.wolox.android.bootstrap.databinding.FragmentPostsBinding
+import ar.com.wolox.android.bootstrap.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class PostsFragment: Fragment() {
+class PostsFragment: BaseFragment() {
 
     private lateinit var binding: FragmentPostsBinding
 
-    private val viewModel: PostsViewModel by viewModels()
+    override val viewModel: PostsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPostsBinding.inflate(inflater)
-        viewModel.getPosts()
+        getPosts()
         return binding.root
+    }
+
+    private fun getPosts() {
+        viewModel.apply {
+            getPosts()
+            posts.observe(viewLifecycleOwner) {
+                // Handle response
+            }
+        }
     }
 
     companion object {
