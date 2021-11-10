@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Wolox Android Bootstrap</string>
+    <string name="default_shared_preferences_name">%1s_preferences</string>
 </resources>
