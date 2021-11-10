@@ -1,4 +1,4 @@
-package ar.com.wolox.android.bootstrap.repository
+package ar.com.wolox.android.bootstrap.network.repository
 
 import ar.com.wolox.android.bootstrap.network.service.PostService
 import kotlinx.coroutines.Dispatchers
