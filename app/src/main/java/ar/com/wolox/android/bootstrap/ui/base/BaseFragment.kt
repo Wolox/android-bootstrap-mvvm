@@ -9,6 +9,10 @@ abstract class BaseFragment: Fragment() {
 
     abstract val viewModel: BaseViewModel
 
+    open fun setListeners() { }
+
+    open fun setObservers() { }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.requestStatus.observe(viewLifecycleOwner) {
@@ -17,6 +21,8 @@ abstract class BaseFragment: Fragment() {
                 else -> hideLoading()
             }
         }
+        setListeners()
+        setObservers()
     }
 
     protected fun showLoading() {

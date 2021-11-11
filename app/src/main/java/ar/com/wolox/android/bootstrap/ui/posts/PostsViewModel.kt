@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import ar.com.wolox.android.bootstrap.model.Post
-import ar.com.wolox.android.bootstrap.network.repository.PostRepository
+import ar.com.wolox.android.bootstrap.repository.PostRepository
 import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 import ar.com.wolox.android.bootstrap.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

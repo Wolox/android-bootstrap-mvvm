@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Wolox Android Bootstrap</string>
+    <string name="wolox_company_name">Wolox, part of Accenture</string>
     <string name="default_shared_preferences_name">%1s_preferences</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="invalid_credentials">Invalid credentials</string>
+    <string name="server_error">Server error</string>
+    <string name="empty_username_error">Username must not be empty!</string>
+    <string name="empty_password_error">Password must not be empty!</string>
+    <string name="ok">OK</string>
 </resources>

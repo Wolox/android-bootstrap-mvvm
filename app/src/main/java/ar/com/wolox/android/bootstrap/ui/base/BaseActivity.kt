@@ -1,6 +1,7 @@
 package ar.com.wolox.android.bootstrap.ui.base
 
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -18,10 +19,12 @@ open class BaseActivity: AppCompatActivity() {
     // TODO: Replace with View Binding
     fun showLoading() {
         findViewById<ProgressBar>(R.id.loading).visibility = View.VISIBLE
+        findViewById<FrameLayout>(R.id.fragmentContainer).visibility = View.GONE
     }
 
     // TODO: Replace with View Binding
     fun hideLoading() {
         findViewById<ProgressBar>(R.id.loading).visibility = View.GONE
+        findViewById<FrameLayout>(R.id.fragmentContainer).visibility = View.VISIBLE
     }
 }
