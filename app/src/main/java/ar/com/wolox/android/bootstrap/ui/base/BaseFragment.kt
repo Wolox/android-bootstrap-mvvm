@@ -25,11 +25,11 @@ abstract class BaseFragment<V: BaseView, M: BaseViewModel<V>>: Fragment(), BaseV
         setObservers()
     }
 
-    protected fun showLoading() {
+    override fun showLoading() {
         (requireActivity() as BaseActivity).showLoading()
     }
 
-    protected fun hideLoading() {
+    override fun hideLoading() {
         (requireActivity() as BaseActivity).hideLoading()
     }
 }
