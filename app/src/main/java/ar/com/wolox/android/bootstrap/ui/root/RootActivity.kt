@@ -20,6 +20,7 @@ class RootActivity: BaseActivity() {
             } else {
                 LoginActivity.start(this)
             }
+            finish()
         }
         viewModel.isUserLogged()
     }
