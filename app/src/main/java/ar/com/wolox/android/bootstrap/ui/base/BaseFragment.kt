@@ -5,9 +5,9 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 
-abstract class BaseFragment: Fragment() {
+abstract class BaseFragment<V: BaseView, M: BaseViewModel<V>>: Fragment(), BaseView {
 
-    abstract val viewModel: BaseViewModel
+    abstract val viewModel: M
 
     open fun setListeners() { }
 

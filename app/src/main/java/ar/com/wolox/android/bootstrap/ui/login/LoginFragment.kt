@@ -17,7 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginFragment: BaseFragment(), LoginView {
+class LoginFragment: BaseFragment<LoginView, LoginViewModel>(), LoginView {
 
     override val viewModel: LoginViewModel by viewModels()
 

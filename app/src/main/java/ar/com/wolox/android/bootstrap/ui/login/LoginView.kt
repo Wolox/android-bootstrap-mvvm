@@ -1,6 +1,8 @@
 package ar.com.wolox.android.bootstrap.ui.login
 
-interface LoginView {
+import ar.com.wolox.android.bootstrap.ui.base.BaseView
+
+interface LoginView: BaseView {
 
     fun showInvalidInputError()
     fun showEmptyUsernameError()
