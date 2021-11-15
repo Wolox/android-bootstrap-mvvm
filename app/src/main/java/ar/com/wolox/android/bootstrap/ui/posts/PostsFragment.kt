@@ -7,10 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.com.wolox.android.bootstrap.databinding.FragmentPostsBinding
-<<<<<<< HEAD
 import ar.com.wolox.android.bootstrap.ui.adapter.PostsAdapter
-=======
->>>>>>> main
 import ar.com.wolox.android.bootstrap.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
