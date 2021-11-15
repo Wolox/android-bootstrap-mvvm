@@ -14,7 +14,6 @@
             android:layout_height="match_parent"
             android:overScrollMode="never"
             android:scrollbars="none"
-            android:layout_marginTop="@dimen/dimen_16dp"
             tools:listitem="@layout/viewholder_post" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

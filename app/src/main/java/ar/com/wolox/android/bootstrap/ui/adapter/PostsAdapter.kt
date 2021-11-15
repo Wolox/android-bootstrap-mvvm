@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import ar.com.wolox.android.bootstrap.databinding.ViewholderPostBinding
 import ar.com.wolox.android.bootstrap.model.Post
 import ar.com.wolox.android.bootstrap.utils.BindingViewHolder
+import ar.com.wolox.android.bootstrap.utils.extensions.removeLineBreaks
 
 class PostsAdapter:
     ListAdapter<Post, BindingViewHolder<Post, ViewholderPostBinding>>(diffCallback) {
@@ -48,7 +49,7 @@ class PostsAdapter:
         override fun bind(item: Post) {
             with(binding) {
                 title.text = item.title
-                body.text = item.body.replace("\n", "")
+                body.text = item.body.removeLineBreaks()
             }
         }
     }
