@@ -52,7 +52,7 @@ class LoginFragment: BaseFragment<LoginView, LoginViewModel>(), LoginView {
                 LoginResponse.SUCCESS -> goToPosts()
                 LoginResponse.INVALID_CREDENTIALS -> showInvalidCredentialsError()
                 LoginResponse.INVALID_INPUT -> showInvalidInputError()
-                LoginResponse.FAILURE -> showServerError()
+                else -> showServerError()
             }
         }
     }

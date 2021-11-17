@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'jacoco'
 
 android {
     compileSdk 31
@@ -14,11 +15,6 @@ android {
         versionName "1.0"
         buildConfigField "String", "BASE_URL", "\"https://jsonplaceholder.typicode.com\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        setProperty("archivesBaseName", "WoloxAndroidBootstrap-$versionName")
-    }
-
-    testOptions {
-        unitTests.includeAndroidResources = true
     }
 
     signingConfigs {
@@ -29,7 +25,7 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('keystore/release.keystore')
+            storeFile file('keystore/debug.keystore')
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
@@ -39,7 +35,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-            testCoverageEnabled true
+            testCoverageEnabled false
         }
 
         release {
@@ -57,14 +53,19 @@ android {
     buildFeatures {
         dataBinding true
     }
+
+    testOptions {
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
+        unitTests.returnDefaultValues = true
+    }
 }
 
-tasks.withType(Test) {
-    testLogging {
-        exceptionFormat "full"
-        events "started", "skipped", "passed", "failed"
-        showStandardStreams true
-    }
+jacoco {
+    toolVersion = "0.8.7"
 }
 
 ext {
@@ -125,4 +126,28 @@ dependencies {
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
+}
+
+task jacocoCoverageReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
+    afterEvaluate {
+        def debugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug")
+        def mainSrc = fileTree(dir: "${project.projectDir}/src/main/java")
+        sourceDirectories.setFrom(files([mainSrc]))
+        classDirectories.setFrom(files([debugTree]))
+        executionData.setFrom(fileTree(dir: "$buildDir", includes: [
+                "jacoco/testDebugUnitTest.exec",
+        ]))
+    }
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+    doLast {
+        println("Find the report in: file://${buildDir}/reports/jacoco/jacocoCoverageReport/html/index.html")
+    }
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
 }
