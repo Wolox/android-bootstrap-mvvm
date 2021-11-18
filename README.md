@@ -4,7 +4,7 @@
 
 # <a name="topic-title"></a> Wolox Android Bootstrap
 
-This is the base template project that we use at [Wolox](https://www.wolox.com.ar/) for new Android applications.
+This is the base template project we use at [Wolox](https://www.wolox.com.ar/) for new Android applications.
 
 ## <a name="topic-contributing"></a> Contributing
 
@@ -16,7 +16,7 @@ This is the base template project that we use at [Wolox](https://www.wolox.com.a
 
 ## <a name="topic-about"></a> About
 
-This project is maintained by [Wolox](https://github.com/Wolox) and is developed by [Wolox](http://www.wolox.com.ar).
+This project is developed and maintained by [Wolox](http://www.wolox.com.ar).
 
 ![Wolox](https://raw.githubusercontent.com/Wolox/press-kit/master/logos/logo_banner.png)
 
