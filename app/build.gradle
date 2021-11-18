@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'jacoco'
+apply from: '../jacoco.gradle'
 
 android {
     compileSdk 31
@@ -126,28 +127,4 @@ dependencies {
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
-}
-
-task jacocoCoverageReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
-    afterEvaluate {
-        def debugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug")
-        def mainSrc = fileTree(dir: "${project.projectDir}/src/main/java")
-        sourceDirectories.setFrom(files([mainSrc]))
-        classDirectories.setFrom(files([debugTree]))
-        executionData.setFrom(fileTree(dir: "$buildDir", includes: [
-                "jacoco/testDebugUnitTest.exec",
-        ]))
-    }
-    reports {
-        xml.enabled = true
-        html.enabled = true
-    }
-    doLast {
-        println("Find the report in: file://${buildDir}/reports/jacoco/jacocoCoverageReport/html/index.html")
-    }
-}
-
-tasks.withType(Test) {
-    jacoco.includeNoLocationClasses = true
-    jacoco.excludes = ['jdk.internal.*']
 }
