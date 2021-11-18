@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ar.com.wolox.android.bootstrap.R
 
-open class BaseActivity: AppCompatActivity() {
+open class BaseActivity : AppCompatActivity() {
 
     fun replaceFragment(fragment: Fragment) {
         supportFragmentManager

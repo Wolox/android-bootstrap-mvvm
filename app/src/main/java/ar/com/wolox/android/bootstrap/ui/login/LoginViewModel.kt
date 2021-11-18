@@ -16,7 +16,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val sharedPreferencesManager: SharedPreferencesManager
-): BaseViewModel<LoginView>() {
+) : BaseViewModel<LoginView>() {
 
     val inputErrors = arrayListOf<InputError>()
 

@@ -8,7 +8,7 @@ import ar.com.wolox.android.bootstrap.ui.posts.PostsActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RootActivity: BaseActivity() {
+class RootActivity : BaseActivity() {
 
     private val viewModel: RootViewModel by viewModels()
 

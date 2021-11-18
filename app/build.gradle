@@ -64,6 +64,10 @@ android {
     }
 }
 
+configurations {
+    ktlint
+}
+
 jacoco {
     toolVersion = "0.8.7"
 }
@@ -86,6 +90,7 @@ ext {
     leak_canary_version = '2.7'
     mockito_version = '4.0.0'
     arch_core_testing_version = '2.1.0'
+    ktlint_version = '0.43.0'
 }
 
 dependencies {
@@ -126,4 +131,27 @@ dependencies {
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
+
+    // Linter
+    ktlint("com.pinterest:ktlint:$ktlint_version")
+}
+
+task ktlint(type: JavaExec, group: "verification") {
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    main = "com.pinterest.ktlint.Main"
+    args "src/**/*.kt"
+    // to generate report in checkstyle format prepend following args:
+    // "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/ktlint.xml"
+    // to add a baseline to check against prepend following args:
+    // "--baseline=ktlint-baseline.xml"
+    // see https://github.com/pinterest/ktlint#usage for more
+}
+check.dependsOn ktlint
+
+task ktlintFormat(type: JavaExec, group: "formatting") {
+    description = "Fix Kotlin code style deviations."
+    classpath = configurations.ktlint
+    main = "com.pinterest.ktlint.Main"
+    args "-F", "src/**/*.kt"
 }
