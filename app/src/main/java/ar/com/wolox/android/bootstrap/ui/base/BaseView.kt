@@ -1,3 +1,6 @@
 package ar.com.wolox.android.bootstrap.ui.base
 
-interface BaseView
+interface BaseView {
+    fun showLoading()
+    fun hideLoading()
+}

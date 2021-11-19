@@ -22,13 +22,13 @@ class PostsViewModel @Inject constructor(
 
     fun getPosts() {
         viewModelScope.launch {
-            _requestStatus.value = RequestStatus.LOADING
+            toggleRequestStatus()
             val result = postsRepository.getPosts()
             if (result.isSuccessful) {
                 _posts.value = result.body()!!
             } else {
             }
-            _requestStatus.value = RequestStatus.FINISHED
+            toggleRequestStatus()
         }
     }
 }

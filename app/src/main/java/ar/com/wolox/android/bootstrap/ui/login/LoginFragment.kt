@@ -47,14 +47,17 @@ class LoginFragment : BaseFragment<LoginView, LoginViewModel>(), LoginView {
     override fun setObservers() {
         viewModel.login.observe(viewLifecycleOwner) {
             when (it) {
-                LoginResponse.SUCCESS -> goToPosts()
+                LoginResponse.SUCCESS -> {
+                    goToPosts()
+                    requireActivity().finish()
+                }
                 LoginResponse.INVALID_CREDENTIALS -> showInvalidCredentialsError()
                 LoginResponse.INVALID_INPUT -> showInvalidInputError()
                 else -> showServerError()
             }
         }
     }
-
+    
     override fun showEmptyUsernameError() {
         binding.usernameInput.error = getString(R.string.empty_username_error)
     }
