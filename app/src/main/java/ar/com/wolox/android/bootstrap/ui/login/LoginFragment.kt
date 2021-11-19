@@ -57,7 +57,7 @@ class LoginFragment : BaseFragment<LoginView, LoginViewModel>(), LoginView {
             }
         }
     }
-    
+
     override fun showEmptyUsernameError() {
         binding.usernameInput.error = getString(R.string.empty_username_error)
     }
