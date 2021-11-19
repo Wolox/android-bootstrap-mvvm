@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'jacoco'
+apply from: '../jacoco.gradle'
 
 android {
     compileSdk 31
@@ -14,11 +16,6 @@ android {
         versionName "1.0"
         buildConfigField "String", "BASE_URL", "\"https://jsonplaceholder.typicode.com\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        setProperty("archivesBaseName", "WoloxAndroidBootstrap-$versionName")
-    }
-
-    testOptions {
-        unitTests.includeAndroidResources = true
     }
 
     signingConfigs {
@@ -39,7 +36,6 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-            testCoverageEnabled true
         }
 
         release {
@@ -57,14 +53,19 @@ android {
     buildFeatures {
         dataBinding true
     }
+
+    testOptions {
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
+        unitTests.returnDefaultValues = true
+    }
 }
 
-tasks.withType(Test) {
-    testLogging {
-        exceptionFormat "full"
-        events "started", "skipped", "passed", "failed"
-        showStandardStreams true
-    }
+jacoco {
+    toolVersion = "0.8.7"
 }
 
 ext {
