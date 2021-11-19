@@ -6,4 +6,5 @@
     <color name="wolox_white">#FAFAFA</color>
     <color name="wolox_yellow">#FFD834</color>
     <color name="wolox_green">#96E5D8</color>
+    <color name="wolox_dark_gray">#F4F4F4</color>
 </resources>

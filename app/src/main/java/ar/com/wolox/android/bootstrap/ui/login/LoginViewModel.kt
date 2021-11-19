@@ -27,7 +27,7 @@ class LoginViewModel @Inject constructor(
     fun login(username: String, password: String) {
         inputErrors.clear()
         if (isInputValid(username, password)) {
-            _requestStatus.value = RequestStatus.LOADING
+            toggleRequestStatus()
             viewModelScope.launch {
                 val response = userRepository.getUsers()
                 if (response.isSuccessful) {
@@ -41,7 +41,7 @@ class LoginViewModel @Inject constructor(
                 } else {
                     _login.value = LoginResponse.FAILURE
                 }
-                _requestStatus.value = RequestStatus.FINISHED
+                toggleRequestStatus()
             }
         } else {
             _login.value = LoginResponse.INVALID_INPUT

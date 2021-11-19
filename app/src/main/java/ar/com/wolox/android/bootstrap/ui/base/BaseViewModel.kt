@@ -7,7 +7,22 @@ import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 
 open class BaseViewModel<V: BaseView>: ViewModel() {
 
-    protected val _requestStatus = MutableLiveData<RequestStatus>()
+    var view: V? = null
+        private set
+
+    private val _requestStatus = MutableLiveData<RequestStatus>()
     val requestStatus: LiveData<RequestStatus>
         get() = _requestStatus
+
+    fun toggleRequestStatus() {
+        _requestStatus.apply {
+            value = if (value == RequestStatus.LOADING) {
+                view?.hideLoading()
+                RequestStatus.FINISHED
+            } else {
+                view?.showLoading()
+                RequestStatus.LOADING
+            }
+        }
+    }
 }
