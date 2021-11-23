@@ -27,9 +27,7 @@ open class BaseViewModel<V : BaseView> : ViewModel() {
     }
 
     fun onRequestFailed(error: Int) {
-        _requestStatus.apply {
-            value = RequestStatus.Failure(error)
-            view?.hideLoading()
-        }
+        view?.hideLoading()
+        _requestStatus.value = RequestStatus.Failure(error)
     }
 }

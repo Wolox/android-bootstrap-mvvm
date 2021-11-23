@@ -33,19 +33,25 @@ class PostsFragment : BaseFragment<PostsView, PostsViewModel>(), PostsView {
         return binding.root
     }
 
+    override fun showErrorSnackbar() {
+        SnackbarFactory.create(
+            binding.postRecyclerView,
+            getString(R.string.posts_error),
+            getString(R.string.ok)
+        )
+    }
+
     override fun setObservers() {
         viewModel.requestStatus.observe(viewLifecycleOwner) {
             if (it is RequestStatus.Failure) {
                 when (it.error) {
                     // Handle every possible error here
+                    NOT_FOUND_STATUS_CODE -> showErrorSnackbar()
                     INTERNAL_SERVER_ERROR_STATUS_CODE -> showErrorSnackbar()
+                    else -> showErrorSnackbar()
                 }
             }
         }
-    }
-
-    override fun showErrorSnackbar() {
-        SnackbarFactory.create(binding.postRecyclerView, getString(R.string.posts_error), getString(R.string.ok))
     }
 
     private fun getPosts() {

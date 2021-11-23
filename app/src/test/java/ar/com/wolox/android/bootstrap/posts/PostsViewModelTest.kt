@@ -5,6 +5,7 @@ import ar.com.wolox.android.bootstrap.Constants.INTERNAL_SERVER_ERROR_STATUS_COD
 import ar.com.wolox.android.bootstrap.base.BaseViewModelTest
 import ar.com.wolox.android.bootstrap.base.MainCoroutineRule
 import ar.com.wolox.android.bootstrap.login.LoginTestConstants.ERROR_RESPONSE
+import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 import ar.com.wolox.android.bootstrap.posts.PostsTestsConstants.SUCCESSFUL_POSTS_RESPONSE
 import ar.com.wolox.android.bootstrap.repository.PostRepository
 import ar.com.wolox.android.bootstrap.ui.posts.PostsView
@@ -54,10 +55,10 @@ class PostsViewModelTest : BaseViewModelTest<PostsView, PostsViewModel>() {
     }
 
     @Test
-    fun `given an unsuccessful response, then no posts are shown`() = runBlocking {
+    fun `given an unsuccessful response, then an error message is shown`() = runBlocking {
         whenever(repository.getPosts()).thenReturn(Response.error(INTERNAL_SERVER_ERROR_STATUS_CODE, ERROR_RESPONSE.toResponseBody()))
         viewModel.getPosts()
         verify(repository, times(1)).getPosts()
-        Assert.assertEquals(viewModel.posts.value!!.size, 0)
+        Assert.assertEquals(INTERNAL_SERVER_ERROR_STATUS_CODE, (viewModel.requestStatus.value as RequestStatus.Failure).error)
     }
 }
