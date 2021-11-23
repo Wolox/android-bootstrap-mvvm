@@ -1,6 +1,7 @@
 package ar.com.wolox.android.bootstrap.posts
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import ar.com.wolox.android.bootstrap.Constants.INTERNAL_SERVER_ERROR_STATUS_CODE
 import ar.com.wolox.android.bootstrap.base.BaseViewModelTest
 import ar.com.wolox.android.bootstrap.base.MainCoroutineRule
 import ar.com.wolox.android.bootstrap.login.LoginTestConstants.ERROR_RESPONSE
@@ -54,7 +55,7 @@ class PostsViewModelTest : BaseViewModelTest<PostsView, PostsViewModel>() {
 
     @Test
     fun `given an unsuccessful response, then no posts are shown`() = runBlocking {
-        whenever(repository.getPosts()).thenReturn(Response.error(500, ERROR_RESPONSE.toResponseBody()))
+        whenever(repository.getPosts()).thenReturn(Response.error(INTERNAL_SERVER_ERROR_STATUS_CODE, ERROR_RESPONSE.toResponseBody()))
         viewModel.getPosts()
         verify(repository, times(1)).getPosts()
         Assert.assertEquals(viewModel.posts.value!!.size, 0)

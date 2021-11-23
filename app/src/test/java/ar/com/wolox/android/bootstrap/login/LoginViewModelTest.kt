@@ -1,6 +1,7 @@
 package ar.com.wolox.android.bootstrap.login
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import ar.com.wolox.android.bootstrap.Constants.INTERNAL_SERVER_ERROR_STATUS_CODE
 import ar.com.wolox.android.bootstrap.Constants.USER_IS_LOGGED_KEY
 import ar.com.wolox.android.bootstrap.base.BaseViewModelTest
 import ar.com.wolox.android.bootstrap.base.MainCoroutineRule
@@ -71,7 +72,7 @@ class LoginViewModelTest : BaseViewModelTest<LoginView, LoginViewModel>() {
 
     @Test
     fun `given an error in the login service, when the user presses the login button, then an error message is displayed`() = runBlocking {
-        whenever(repository.getUsers()).thenReturn(Response.error(500, ERROR_RESPONSE.toResponseBody()))
+        whenever(repository.getUsers()).thenReturn(Response.error(INTERNAL_SERVER_ERROR_STATUS_CODE, ERROR_RESPONSE.toResponseBody()))
         viewModel.login(VALID_USERNAME, VALID_PASSWORD)
         verify(repository, times(1)).getUsers()
         Assert.assertTrue(viewModel.inputErrors.isEmpty())
