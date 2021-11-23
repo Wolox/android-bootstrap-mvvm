@@ -1,6 +1,7 @@
 package ar.com.wolox.android.bootstrap.network.util
 
-enum class RequestStatus {
-    LOADING,
-    FINISHED
+sealed class RequestStatus {
+    object Finished : RequestStatus()
+    object Loading : RequestStatus()
+    class Failure(val error: Int) : RequestStatus()
 }

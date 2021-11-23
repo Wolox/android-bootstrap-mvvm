@@ -10,4 +10,5 @@
     <string name="empty_username_error">Username must not be empty!</string>
     <string name="empty_password_error">Password must not be empty!</string>
     <string name="ok">OK</string>
+    <string name="posts_error">Error retrieving posts</string>
 </resources>

@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import ar.com.wolox.android.bootstrap.model.Post
 import ar.com.wolox.android.bootstrap.repository.PostRepository
-import ar.com.wolox.android.bootstrap.ui.base.BaseView
 import ar.com.wolox.android.bootstrap.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -26,12 +25,10 @@ class PostsViewModel @Inject constructor(
             val result = postsRepository.getPosts()
             if (result.isSuccessful) {
                 _posts.value = result.body()!!
+                toggleRequestStatus()
             } else {
-                _posts.value = listOf()
+                onRequestFailed(result.code())
             }
-            toggleRequestStatus()
         }
     }
 }
-
-interface PostsView : BaseView
