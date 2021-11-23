@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import ar.com.wolox.android.bootstrap.model.Post
 import ar.com.wolox.android.bootstrap.repository.PostRepository
-import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 import ar.com.wolox.android.bootstrap.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -27,7 +26,6 @@ class PostsViewModel @Inject constructor(
             if (result.isSuccessful) {
                 _posts.value = result.body()!!
             } else {
-
             }
             toggleRequestStatus()
         }

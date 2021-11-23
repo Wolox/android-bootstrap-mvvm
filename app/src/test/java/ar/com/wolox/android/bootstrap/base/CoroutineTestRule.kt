@@ -2,14 +2,12 @@ package ar.com.wolox.android.bootstrap.base
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
-import java.util.concurrent.Executors
 
 /**
  * If a test method is annotated with this, then the [CoroutineTestRule] will be executed.
@@ -23,7 +21,7 @@ annotation class CoroutineTest
  * otherwise just those that have [CoroutineTest] annotation.
  */
 @ExperimentalCoroutinesApi
-class MainCoroutineRule(val dispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()):
+class MainCoroutineRule(val dispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()) :
     TestWatcher(),
     TestCoroutineScope by TestCoroutineScope(dispatcher) {
     override fun starting(description: Description?) {
@@ -37,4 +35,3 @@ class MainCoroutineRule(val dispatcher: TestCoroutineDispatcher = TestCoroutineD
         Dispatchers.resetMain()
     }
 }
-

@@ -8,4 +8,4 @@ data class User(
     @SerializedName("name") val name: String,
     @SerializedName("username") val username: String,
     @SerializedName("phone") val phone: String,
-): Serializable
+) : Serializable

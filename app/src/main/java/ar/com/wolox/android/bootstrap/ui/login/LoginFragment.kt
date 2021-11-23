@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import ar.com.wolox.android.bootstrap.R
@@ -13,11 +12,10 @@ import ar.com.wolox.android.bootstrap.databinding.FragmentLoginBinding
 import ar.com.wolox.android.bootstrap.ui.base.BaseFragment
 import ar.com.wolox.android.bootstrap.ui.posts.PostsActivity
 import ar.com.wolox.android.bootstrap.utils.SnackbarFactory
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginFragment: BaseFragment<LoginView, LoginViewModel>(), LoginView {
+class LoginFragment : BaseFragment<LoginView, LoginViewModel>(), LoginView {
 
     override val viewModel: LoginViewModel by viewModels()
 
@@ -59,7 +57,7 @@ class LoginFragment: BaseFragment<LoginView, LoginViewModel>(), LoginView {
             }
         }
     }
-    
+
     override fun showEmptyUsernameError() {
         binding.usernameInput.error = getString(R.string.empty_username_error)
     }

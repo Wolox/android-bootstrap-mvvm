@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import ar.com.wolox.android.bootstrap.Constants
-import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 import ar.com.wolox.android.bootstrap.repository.UserRepository
 import ar.com.wolox.android.bootstrap.ui.base.BaseViewModel
 import ar.com.wolox.android.bootstrap.utils.SharedPreferencesManager
@@ -16,7 +15,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val sharedPreferencesManager: SharedPreferencesManager
-): BaseViewModel<LoginView>() {
+) : BaseViewModel<LoginView>() {
 
     val inputErrors = arrayListOf<InputError>()
 

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 
-open class BaseViewModel<V: BaseView>: ViewModel() {
+open class BaseViewModel<V : BaseView> : ViewModel() {
 
     var view: V? = null
         private set

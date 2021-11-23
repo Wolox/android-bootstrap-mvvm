@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 
-abstract class BaseFragment<V: BaseView, M: BaseViewModel<V>>: Fragment(), BaseView {
+abstract class BaseFragment<V : BaseView, M : BaseViewModel<V>> : Fragment(), BaseView {
 
     abstract val viewModel: M
 
@@ -16,7 +16,7 @@ abstract class BaseFragment<V: BaseView, M: BaseViewModel<V>>: Fragment(), BaseV
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.requestStatus.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 RequestStatus.LOADING -> showLoading()
                 else -> hideLoading()
             }

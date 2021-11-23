@@ -12,7 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner
 import java.lang.reflect.ParameterizedType
 
 @RunWith(MockitoJUnitRunner::class)
-abstract class BaseViewModelTest<V: BaseView, M: BaseViewModel<V>> {
+abstract class BaseViewModelTest<V : BaseView, M : BaseViewModel<V>> {
 
     protected lateinit var viewModel: M
     protected lateinit var view: V

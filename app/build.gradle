@@ -3,7 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'jacoco'
-apply from: '../jacoco.gradle'
+apply from: '../scripts/coverage/jacoco.gradle'
+apply from: '../scripts/quality/quality.gradle'
 
 android {
     compileSdk 31

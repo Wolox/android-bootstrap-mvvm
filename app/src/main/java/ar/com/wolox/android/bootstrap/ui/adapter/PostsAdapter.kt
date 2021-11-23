@@ -11,7 +11,7 @@ import ar.com.wolox.android.bootstrap.model.Post
 import ar.com.wolox.android.bootstrap.utils.BindingViewHolder
 import ar.com.wolox.android.bootstrap.utils.extensions.removeLineBreaks
 
-class PostsAdapter:
+class PostsAdapter :
     ListAdapter<Post, BindingViewHolder<Post, ViewholderPostBinding>>(diffCallback) {
 
     override fun onCreateViewHolder(
@@ -44,7 +44,7 @@ class PostsAdapter:
     inner class PostViewHolder(
         binding: ViewholderPostBinding,
         private val context: Context
-    ): BindingViewHolder<Post, ViewholderPostBinding>(binding) {
+    ) : BindingViewHolder<Post, ViewholderPostBinding>(binding) {
 
         override fun bind(item: Post) {
             with(binding) {

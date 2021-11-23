@@ -11,7 +11,6 @@ import ar.com.wolox.android.bootstrap.login.LoginTestConstants.INVALID_USERNAME
 import ar.com.wolox.android.bootstrap.login.LoginTestConstants.SUCCESSFUL_USER_LIST
 import ar.com.wolox.android.bootstrap.login.LoginTestConstants.VALID_PASSWORD
 import ar.com.wolox.android.bootstrap.login.LoginTestConstants.VALID_USERNAME
-import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 import ar.com.wolox.android.bootstrap.repository.UserRepository
 import ar.com.wolox.android.bootstrap.ui.login.LoginResponse
 import ar.com.wolox.android.bootstrap.ui.login.LoginView
@@ -20,7 +19,6 @@ import ar.com.wolox.android.bootstrap.utils.SharedPreferencesManager
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert
 import org.junit.Rule
@@ -35,7 +33,7 @@ import retrofit2.Response
 
 @HiltAndroidTest
 @ExperimentalCoroutinesApi
-class LoginViewModelTest: BaseViewModelTest<LoginView, LoginViewModel>() {
+class LoginViewModelTest : BaseViewModelTest<LoginView, LoginViewModel>() {
 
     @get:Rule
     val coroutineTestRule = MainCoroutineRule()
