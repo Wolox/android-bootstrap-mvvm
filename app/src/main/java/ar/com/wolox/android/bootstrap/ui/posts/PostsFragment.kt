@@ -12,7 +12,7 @@ import ar.com.wolox.android.bootstrap.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PostsFragment : BaseFragment<Nothing, PostsViewModel>() {
+class PostsFragment : BaseFragment<PostsView, PostsViewModel>() {
 
     private lateinit var binding: FragmentPostsBinding
 

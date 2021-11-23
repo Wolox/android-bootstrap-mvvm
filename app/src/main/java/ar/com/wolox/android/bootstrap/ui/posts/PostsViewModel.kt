@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import ar.com.wolox.android.bootstrap.model.Post
 import ar.com.wolox.android.bootstrap.repository.PostRepository
+import ar.com.wolox.android.bootstrap.ui.base.BaseView
 import ar.com.wolox.android.bootstrap.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -13,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PostsViewModel @Inject constructor(
     private val postsRepository: PostRepository,
-) : BaseViewModel<Nothing>() {
+) : BaseViewModel<PostsView>() {
 
     private val _posts = MutableLiveData<List<Post>>()
     val posts: LiveData<List<Post>>
@@ -26,8 +27,11 @@ class PostsViewModel @Inject constructor(
             if (result.isSuccessful) {
                 _posts.value = result.body()!!
             } else {
+                _posts.value = listOf()
             }
             toggleRequestStatus()
         }
     }
 }
+
+interface PostsView : BaseView
