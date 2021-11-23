@@ -1,0 +1,55 @@
+format_version: '11'
+default_step_lib_source: 'https://github.com/bitrise-io/bitrise-steplib.git'
+project_type: android
+trigger_map:
+  - push_branch: '*'
+    workflow: check
+  - pull_request_source_branch: '*'
+    workflow: check
+    pull_request_target_branch: main
+workflows:
+  check:
+    steps:
+      - activate-ssh-key@4:
+          run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+      - git-clone@6: {}
+      - cache-pull@2: {}
+      - install-missing-android-tools@3.0:
+          inputs:
+            - gradlew_path: $PROJECT_LOCATION/gradlew
+      - script@1:
+          title: Gradle Check
+          inputs:
+            - content: |-
+                #!/usr/bin/env bash
+                # fail if any commands fails
+                set -e
+                # debug log
+                set -x
+
+                # write your script here
+                ./gradlew check
+      - android-lint@0:
+          inputs:
+            - project_location: $PROJECT_LOCATION
+            - variant: $VARIANT
+      - android-unit-test@1:
+          inputs:
+            - project_location: $PROJECT_LOCATION
+            - variant: $VARIANT
+      - deploy-to-bitrise-io@2: {}
+      - cache-push@2: {}
+meta:
+  bitrise.io:
+    stack: linux-docker-android-20.04
+app:
+  envs:
+    - opts:
+        is_expand: false
+      PROJECT_LOCATION: .
+    - opts:
+        is_expand: false
+      MODULE: app
+    - opts:
+        is_expand: false
+      VARIANT: debug
