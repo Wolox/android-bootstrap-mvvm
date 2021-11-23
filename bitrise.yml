@@ -18,20 +18,19 @@ workflows:
           inputs:
             - gradlew_path: $PROJECT_LOCATION/gradlew
       - script@1:
-          title: Gradle Check
+          title: Lint
           inputs:
             - content: |-
                 set -e
                 set -x
-                ./gradlew check
-      - android-lint@0:
-          inputs:
-            - project_location: $PROJECT_LOCATION
-            - variant: $VARIANT
-      - android-unit-test@1:
-          inputs:
-            - project_location: $PROJECT_LOCATION
-            - variant: $VARIANT
+                ./gradlew ktlint
+      - script@1:
+            title: Test
+            inputs:
+              - content: |-
+                  set -e
+                  set -x
+                  ./gradlew testDebugUnitTest
       - deploy-to-bitrise-io@2: {}
       - cache-push@2: {}
 meta:
