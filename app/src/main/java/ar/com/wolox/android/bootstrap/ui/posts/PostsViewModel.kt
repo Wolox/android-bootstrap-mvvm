@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PostsViewModel @Inject constructor(
     private val postsRepository: PostRepository,
-) : BaseViewModel<Nothing>() {
+) : BaseViewModel<PostsView>() {
 
     private val _posts = MutableLiveData<List<Post>>()
     val posts: LiveData<List<Post>>
@@ -25,9 +25,10 @@ class PostsViewModel @Inject constructor(
             val result = postsRepository.getPosts()
             if (result.isSuccessful) {
                 _posts.value = result.body()!!
+                toggleRequestStatus()
             } else {
+                onRequestFailed(result.code())
             }
-            toggleRequestStatus()
         }
     }
 }

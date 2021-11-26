@@ -17,7 +17,7 @@ abstract class BaseFragment<V : BaseView, M : BaseViewModel<V>> : Fragment(), Ba
         super.onCreate(savedInstanceState)
         viewModel.requestStatus.observe(viewLifecycleOwner) {
             when (it) {
-                RequestStatus.LOADING -> showLoading()
+                RequestStatus.Loading -> showLoading()
                 else -> hideLoading()
             }
         }

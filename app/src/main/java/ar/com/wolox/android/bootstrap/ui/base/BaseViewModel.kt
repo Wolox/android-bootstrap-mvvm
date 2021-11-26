@@ -16,13 +16,18 @@ open class BaseViewModel<V : BaseView> : ViewModel() {
 
     fun toggleRequestStatus() {
         _requestStatus.apply {
-            value = if (value == RequestStatus.LOADING) {
-                view?.hideLoading()
-                RequestStatus.FINISHED
-            } else {
+            value = if (value != RequestStatus.Loading) {
                 view?.showLoading()
-                RequestStatus.LOADING
+                RequestStatus.Finished
+            } else {
+                view?.hideLoading()
+                RequestStatus.Loading
             }
         }
+    }
+
+    fun onRequestFailed(error: Int) {
+        view?.hideLoading()
+        _requestStatus.value = RequestStatus.Failure(error)
     }
 }
