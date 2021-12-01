@@ -16,7 +16,7 @@ android {
         versionCode 1
         versionName "1.0"
         buildConfigField "String", "BASE_URL", "\"https://jsonplaceholder.typicode.com\""
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "ar.com.wolox.android.bootstrap.InstrumentedTestRunner"
     }
 
     signingConfigs {
@@ -119,11 +119,15 @@ dependencies {
     testImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_version"
     testImplementation("org.mockito:mockito-inline:$mockito_version")
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
-    testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     testImplementation "androidx.arch.core:core-testing:$arch_core_testing_version"
-    kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
     androidTestImplementation "androidx.test.ext:junit:$android_test_junit_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    androidTestImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_version"
+    androidTestImplementation("org.mockito:mockito-inline:$mockito_version")
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"

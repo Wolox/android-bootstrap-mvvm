@@ -10,7 +10,6 @@ import ar.com.wolox.android.bootstrap.posts.PostsTestsConstants.SUCCESSFUL_POSTS
 import ar.com.wolox.android.bootstrap.repository.PostRepository
 import ar.com.wolox.android.bootstrap.ui.posts.PostsView
 import ar.com.wolox.android.bootstrap.ui.posts.PostsViewModel
-import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -23,7 +22,6 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import retrofit2.Response
 
-@HiltAndroidTest
 @ExperimentalCoroutinesApi
 class PostsViewModelTest : BaseViewModelTest<PostsView, PostsViewModel>() {
 

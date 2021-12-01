@@ -13,11 +13,11 @@ import ar.com.wolox.android.bootstrap.login.LoginTestConstants.SUCCESSFUL_USER_L
 import ar.com.wolox.android.bootstrap.login.LoginTestConstants.VALID_PASSWORD
 import ar.com.wolox.android.bootstrap.login.LoginTestConstants.VALID_USERNAME
 import ar.com.wolox.android.bootstrap.repository.UserRepository
+import ar.com.wolox.android.bootstrap.ui.login.InputError
 import ar.com.wolox.android.bootstrap.ui.login.LoginResponse
 import ar.com.wolox.android.bootstrap.ui.login.LoginView
 import ar.com.wolox.android.bootstrap.ui.login.LoginViewModel
 import ar.com.wolox.android.bootstrap.utils.SharedPreferencesManager
-import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -32,7 +32,6 @@ import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import retrofit2.Response
 
-@HiltAndroidTest
 @ExperimentalCoroutinesApi
 class LoginViewModelTest : BaseViewModelTest<LoginView, LoginViewModel>() {
 
@@ -85,6 +84,7 @@ class LoginViewModelTest : BaseViewModelTest<LoginView, LoginViewModel>() {
         viewModel.login(EMPTY_USERNAME, VALID_PASSWORD)
         verifyNoInteractions(repository)
         Assert.assertEquals(1, viewModel.inputErrors.size)
+        Assert.assertEquals(InputError.EMPTY_USERNAME, viewModel.inputErrors.first())
         Assert.assertEquals(LoginResponse.INVALID_INPUT, viewModel.login.value)
     }
 
@@ -93,6 +93,7 @@ class LoginViewModelTest : BaseViewModelTest<LoginView, LoginViewModel>() {
         viewModel.login(VALID_USERNAME, EMPTY_PASSWORD)
         verifyNoInteractions(repository)
         Assert.assertEquals(1, viewModel.inputErrors.size)
+        Assert.assertEquals(InputError.EMPTY_PASSWORD, viewModel.inputErrors.first())
         Assert.assertEquals(LoginResponse.INVALID_INPUT, viewModel.login.value)
     }
 
