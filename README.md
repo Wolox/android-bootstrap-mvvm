@@ -5,6 +5,7 @@
 # <a name="topic-title"></a> Wolox Android Bootstrap
 
 [![Build Status](https://app.bitrise.io/app/7b1c2f98a7b30b5c/status.svg?token=4zY_welUUlZHFaAP1yCibw&branch=main)](https://app.bitrise.io/app/7b1c2f98a7b30b5c)
+![Actions Status](https://github.com/Wolox/android-bootstrap-mvvm/actions/workflows/quality.yml/badge.svg)
 
 This is the base template project we use at [Wolox](https://www.wolox.com.ar/) for new Android applications.
 
