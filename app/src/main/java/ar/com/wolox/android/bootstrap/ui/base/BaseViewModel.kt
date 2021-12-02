@@ -18,10 +18,10 @@ open class BaseViewModel<V : BaseView> : ViewModel() {
         _requestStatus.apply {
             value = if (value != RequestStatus.Loading) {
                 view?.showLoading()
-                RequestStatus.Finished
+                RequestStatus.Loading
             } else {
                 view?.hideLoading()
-                RequestStatus.Loading
+                RequestStatus.Finished
             }
         }
     }
