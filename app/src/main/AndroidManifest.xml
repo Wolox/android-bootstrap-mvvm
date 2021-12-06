@@ -30,6 +30,8 @@
 
         <activity android:name=".ui.posts.PostsActivity" />
 
+        <activity android:name=".utils.HiltTestActivity" />
+
     </application>
 
 </manifest>
