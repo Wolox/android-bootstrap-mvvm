@@ -17,6 +17,8 @@ android {
         versionName "1.0"
         buildConfigField "String", "BASE_URL", "\"https://jsonplaceholder.typicode.com\""
         buildConfigField "String", "WOLOX_URL", "\" https://www.wolox.com.ar\""
+        buildConfigField "String", "KEYSTORE_ALIAS", "\"AndroidKeyStore\""
+        buildConfigField "String", "SHARED_PREFERENCES_FILE_NAME", "\"encryptedSharedPreferences\""
         testInstrumentationRunner "ar.com.wolox.android.bootstrap.InstrumentedTestRunner"
     }
 
@@ -99,8 +101,12 @@ ext {
     leak_canary_version = '2.7'
     mockito_version = '4.0.0'
     arch_core_testing_version = '2.1.0'
+<<<<<<< HEAD
     fragment_testing_version = '1.4.0'
     mock_web_server_version = '4.9.3'
+=======
+    security_crypto_version = '1.1.0-alpha03'
+>>>>>>> main
 }
 
 dependencies {
@@ -148,4 +154,7 @@ dependencies {
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
+
+    // Security Crypto
+    implementation "androidx.security:security-crypto:$security_crypto_version"
 }
