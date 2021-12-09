@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
+import ar.com.wolox.android.bootstrap.BuildConfig
 import ar.com.wolox.android.bootstrap.R
 import ar.com.wolox.android.bootstrap.databinding.FragmentLoginBinding
 import ar.com.wolox.android.bootstrap.ui.base.BaseFragment
@@ -80,7 +81,7 @@ class LoginFragment : BaseFragment<LoginView, LoginViewModel>(), LoginView {
         SnackbarFactory.create(binding.loginButton, getString(R.string.server_error), getString(R.string.ok))
     }
 
-    override fun goToWoloxSite() = with(Intent(Intent.ACTION_VIEW, WOLOX_URL.toUri())) {
+    override fun goToWoloxSite() = with(Intent(Intent.ACTION_VIEW, BuildConfig.WOLOX_URL.toUri())) {
         startActivity(this)
     }
 
@@ -91,7 +92,6 @@ class LoginFragment : BaseFragment<LoginView, LoginViewModel>(), LoginView {
     }
 
     companion object {
-        const val WOLOX_URL = "https://www.wolox.com.ar"
         fun newInstance() = LoginFragment()
     }
 }
