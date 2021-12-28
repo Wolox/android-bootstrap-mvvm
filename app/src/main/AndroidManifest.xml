@@ -31,8 +31,7 @@
 
         <activity android:name=".ui.posts.PostsActivity" />
 
-        <activity android:name=".utils.HiltTestActivity" />
-
+        <activity android:name="ar.com.wolox.wolmo.testing.hilt.HiltTestActivity" />
     </application>
 
 </manifest>

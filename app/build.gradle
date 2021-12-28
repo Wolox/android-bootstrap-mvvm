@@ -1,10 +1,18 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'idea'
 apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'jacoco'
 apply from: '../scripts/coverage/jacoco.gradle'
 apply from: '../scripts/quality/quality.gradle'
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
 
 android {
     compileSdk 31
@@ -16,10 +24,10 @@ android {
         versionCode 1
         versionName "1.0"
         buildConfigField "String", "BASE_URL", "\"https://jsonplaceholder.typicode.com\""
-        buildConfigField "String", "WOLOX_URL", "\" https://www.wolox.com.ar\""
+        buildConfigField "String", "WOLOX_URL", "\"https://www.wolox.com.ar\""
         buildConfigField "String", "KEYSTORE_ALIAS", "\"AndroidKeyStore\""
         buildConfigField "String", "SHARED_PREFERENCES_FILE_NAME", "\"encryptedSharedPreferences\""
-        testInstrumentationRunner "ar.com.wolox.android.bootstrap.InstrumentedTestRunner"
+        testInstrumentationRunner "ar.com.wolox.wolmo.testing.runner.WolmoInstrumentedTestRunner"
     }
 
     signingConfigs {
@@ -104,6 +112,7 @@ ext {
     fragment_testing_version = '1.4.0'
     mock_web_server_version = '4.9.3'
     security_crypto_version = '1.1.0-alpha03'
+    wolmo_testing_version = '0.1.2'
 }
 
 dependencies {
@@ -147,7 +156,8 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_version"
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
     debugImplementation "androidx.fragment:fragment-testing:$fragment_testing_version"
-    androidTestImplementation("com.squareup.okhttp3:mockwebserver:$mock_web_server_version")
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:$mock_web_server_version"
+    androidTestImplementation "com.github.Wolox:wolmo-testing-android:$wolmo_testing_version"
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
