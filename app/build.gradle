@@ -1,10 +1,18 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'idea'
 apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'jacoco'
 apply from: '../scripts/coverage/jacoco.gradle'
 apply from: '../scripts/quality/quality.gradle'
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
 
 android {
     compileSdk 31
@@ -16,9 +24,10 @@ android {
         versionCode 1
         versionName "1.0"
         buildConfigField "String", "BASE_URL", "\"https://jsonplaceholder.typicode.com\""
+        buildConfigField "String", "WOLOX_URL", "\"https://www.wolox.com.ar\""
         buildConfigField "String", "KEYSTORE_ALIAS", "\"AndroidKeyStore\""
         buildConfigField "String", "SHARED_PREFERENCES_FILE_NAME", "\"encryptedSharedPreferences\""
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "ar.com.wolox.wolmo.testing.runner.WolmoInstrumentedTestRunner"
     }
 
     signingConfigs {
@@ -39,6 +48,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            testCoverageEnabled true
         }
 
         release {
@@ -67,6 +77,16 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        eachDependency { details ->
+            if ('org.jacoco' == details.requested.group) {
+                details.useVersion "0.8.7"
+            }
+        }
+    }
+}
+
 jacoco {
     toolVersion = "0.8.7"
 }
@@ -89,7 +109,10 @@ ext {
     leak_canary_version = '2.7'
     mockito_version = '4.0.0'
     arch_core_testing_version = '2.1.0'
+    fragment_testing_version = '1.4.0'
+    mock_web_server_version = '4.9.3'
     security_crypto_version = '1.1.0-alpha03'
+    wolmo_testing_version = '0.1.2'
 }
 
 dependencies {
@@ -122,11 +145,19 @@ dependencies {
     testImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_version"
     testImplementation("org.mockito:mockito-inline:$mockito_version")
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
-    testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     testImplementation "androidx.arch.core:core-testing:$arch_core_testing_version"
-    kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
     androidTestImplementation "androidx.test.ext:junit:$android_test_junit_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    androidTestImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_version"
+    androidTestImplementation "org.mockito:mockito-inline:4.1.0"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_testing_version"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:$mock_web_server_version"
+    androidTestImplementation "com.github.Wolox:wolmo-testing-android:$wolmo_testing_version"
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"

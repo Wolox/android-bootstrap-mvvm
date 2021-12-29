@@ -31,8 +31,12 @@ class ServicesModules {
     @Singleton
     fun provideRetrofit(httpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(BASE_URL ?: BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient)
             .build()
+
+    companion object {
+        var BASE_URL: String? = null
+    }
 }
