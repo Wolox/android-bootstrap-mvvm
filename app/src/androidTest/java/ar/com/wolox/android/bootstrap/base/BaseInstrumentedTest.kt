@@ -16,7 +16,7 @@ open class BaseInstrumentedTest() {
 
     @Before
     fun setUp() {
-        service.start(57808)
+        service.start()
         ServicesModules.BASE_URL = service.url("/").toString()
         hiltRule.inject()
     }
