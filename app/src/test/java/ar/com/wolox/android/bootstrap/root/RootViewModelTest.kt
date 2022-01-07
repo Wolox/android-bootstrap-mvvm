@@ -20,7 +20,7 @@ class RootViewModelTest : BaseViewModelTest<BaseView, RootViewModel>() {
     override fun getViewModelInstance() = RootViewModel(sharedPreferencesManager)
 
     @Test
-    fun a() {
+    fun `given an unlogged user, when the user opens the app, then they are redirected to the login`() {
         whenever(sharedPreferencesManager[Constants.USER_IS_LOGGED_KEY, false]).thenReturn(false)
         val s = viewModel.isUserLogged
         Assert.assertFalse(s)
@@ -28,7 +28,7 @@ class RootViewModelTest : BaseViewModelTest<BaseView, RootViewModel>() {
     }
 
     @Test
-    fun b() {
+    fun `given a logged user, when the user opens the app, then they are redirected to the posts list`() {
         whenever(sharedPreferencesManager[Constants.USER_IS_LOGGED_KEY, false]).thenReturn(true)
         val s = viewModel.isUserLogged
         Assert.assertTrue(s)
