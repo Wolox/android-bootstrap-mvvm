@@ -41,9 +41,18 @@ class PostsFragment : BaseFragment<PostsView, PostsViewModel>(), PostsView {
         )
     }
 
+    override fun showEmptyListSnackbar() {
+        SnackbarFactory.create(
+            binding.postRecyclerView,
+            getString(R.string.no_posts_to_show),
+            getString(R.string.ok)
+        )
+    }
+
     override fun setObservers() {
         viewModel.requestStatus.observe(viewLifecycleOwner) {
             if (it is RequestStatus.Failure) {
+                binding.postRecyclerView.visibility = View.GONE
                 when (it.error) {
                     // Handle every possible error here
                     NOT_FOUND_STATUS_CODE -> showErrorSnackbar()
@@ -58,13 +67,19 @@ class PostsFragment : BaseFragment<PostsView, PostsViewModel>(), PostsView {
         viewModel.apply {
             getPosts()
             posts.observe(viewLifecycleOwner) {
-                binding.postRecyclerView.apply {
-                    adapter = PostsAdapter().apply {
-                        submitList(it)
+                if (it.isNotEmpty()) {
+                    binding.postRecyclerView.apply {
+                        adapter = PostsAdapter().apply {
+                            submitList(it)
+                        }
+                        layoutManager = LinearLayoutManager(requireContext())
+                        isNestedScrollingEnabled = false
+                        isFocusable = false
+                        visibility = View.VISIBLE
                     }
-                    layoutManager = LinearLayoutManager(requireContext())
-                    isNestedScrollingEnabled = false
-                    isFocusable = false
+                } else {
+                    binding.postRecyclerView.visibility = View.GONE
+                    showEmptyListSnackbar()
                 }
             }
         }
