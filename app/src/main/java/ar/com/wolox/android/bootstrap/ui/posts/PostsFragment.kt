@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.com.wolox.android.bootstrap.Constants.INTERNAL_SERVER_ERROR_STATUS_CODE
@@ -12,16 +13,15 @@ import ar.com.wolox.android.bootstrap.R
 import ar.com.wolox.android.bootstrap.databinding.FragmentPostsBinding
 import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 import ar.com.wolox.android.bootstrap.ui.adapter.PostsAdapter
-import ar.com.wolox.android.bootstrap.ui.base.BaseFragment
 import ar.com.wolox.android.bootstrap.utils.SnackbarFactory
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PostsFragment : BaseFragment<PostsView, PostsViewModel>(), PostsView {
+class PostsFragment : Fragment(), PostsView {
 
     private lateinit var binding: FragmentPostsBinding
 
-    override val viewModel: PostsViewModel by viewModels()
+    val viewModel: PostsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +31,39 @@ class PostsFragment : BaseFragment<PostsView, PostsViewModel>(), PostsView {
         binding = FragmentPostsBinding.inflate(inflater)
         getPosts()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.requestStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                RequestStatus.Loading -> showLoading()
+                else -> hideLoading()
+            }
+        }
+        setObservers()
+    }
+
+    override fun showLoading() {
+        (requireActivity() as PostsActivity).showLoading()
+    }
+
+    override fun hideLoading() {
+        (requireActivity() as PostsActivity).hideLoading()
+    }
+
+    fun setObservers() {
+        viewModel.requestStatus.observe(viewLifecycleOwner) {
+            if (it is RequestStatus.Failure) {
+                binding.postRecyclerView.visibility = View.GONE
+                when (it.error) {
+                    // Handle every possible error here
+                    NOT_FOUND_STATUS_CODE -> showErrorSnackbar()
+                    INTERNAL_SERVER_ERROR_STATUS_CODE -> showErrorSnackbar()
+                    else -> showErrorSnackbar()
+                }
+            }
+        }
     }
 
     override fun showErrorSnackbar() {
@@ -47,20 +80,6 @@ class PostsFragment : BaseFragment<PostsView, PostsViewModel>(), PostsView {
             getString(R.string.no_posts_to_show),
             getString(R.string.ok)
         )
-    }
-
-    override fun setObservers() {
-        viewModel.requestStatus.observe(viewLifecycleOwner) {
-            if (it is RequestStatus.Failure) {
-                binding.postRecyclerView.visibility = View.GONE
-                when (it.error) {
-                    // Handle every possible error here
-                    NOT_FOUND_STATUS_CODE -> showErrorSnackbar()
-                    INTERNAL_SERVER_ERROR_STATUS_CODE -> showErrorSnackbar()
-                    else -> showErrorSnackbar()
-                }
-            }
-        }
     }
 
     private fun getPosts() {

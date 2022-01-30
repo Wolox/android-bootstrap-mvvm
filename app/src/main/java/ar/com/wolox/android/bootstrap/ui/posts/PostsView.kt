@@ -1,8 +1,8 @@
 package ar.com.wolox.android.bootstrap.ui.posts
 
-import ar.com.wolox.android.bootstrap.ui.base.BaseView
-
-interface PostsView : BaseView {
+interface PostsView {
     fun showErrorSnackbar()
     fun showEmptyListSnackbar()
+    fun showLoading()
+    fun hideLoading()
 }

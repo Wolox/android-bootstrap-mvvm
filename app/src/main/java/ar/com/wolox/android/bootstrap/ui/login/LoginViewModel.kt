@@ -2,10 +2,11 @@ package ar.com.wolox.android.bootstrap.ui.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ar.com.wolox.android.bootstrap.Constants
+import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 import ar.com.wolox.android.bootstrap.repository.UserRepository
-import ar.com.wolox.android.bootstrap.ui.base.BaseViewModel
 import ar.com.wolox.android.bootstrap.utils.SharedPreferencesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,7 +16,31 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val sharedPreferencesManager: SharedPreferencesManager
-) : BaseViewModel<LoginView>() {
+) : ViewModel() {
+
+    var view: LoginView? = null
+        private set
+
+    private val _requestStatus = MutableLiveData<RequestStatus>()
+    val requestStatus: LiveData<RequestStatus>
+        get() = _requestStatus
+
+    fun toggleRequestStatus() {
+        _requestStatus.apply {
+            value = if (value != RequestStatus.Loading) {
+                view?.showLoading()
+                RequestStatus.Loading
+            } else {
+                view?.hideLoading()
+                RequestStatus.Finished
+            }
+        }
+    }
+
+    fun onRequestFailed(error: Int) {
+        view?.hideLoading()
+        _requestStatus.value = RequestStatus.Failure(error)
+    }
 
     val inputErrors = arrayListOf<InputError>()
 

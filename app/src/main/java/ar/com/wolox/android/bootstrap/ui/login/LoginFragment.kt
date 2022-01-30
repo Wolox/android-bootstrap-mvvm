@@ -6,21 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import ar.com.wolox.android.bootstrap.BuildConfig
 import ar.com.wolox.android.bootstrap.R
 import ar.com.wolox.android.bootstrap.databinding.FragmentLoginBinding
-import ar.com.wolox.android.bootstrap.ui.base.BaseFragment
+import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 import ar.com.wolox.android.bootstrap.ui.posts.PostsActivity
 import ar.com.wolox.android.bootstrap.utils.SnackbarFactory
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<LoginView, LoginViewModel>(), LoginView {
-
-    override val viewModel: LoginViewModel by viewModels()
+class LoginFragment : Fragment(), LoginView {
 
     private lateinit var binding: FragmentLoginBinding
+
+    val viewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,7 +32,27 @@ class LoginFragment : BaseFragment<LoginView, LoginViewModel>(), LoginView {
         return binding.root
     }
 
-    override fun setListeners() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.requestStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                RequestStatus.Loading -> showLoading()
+                else -> hideLoading()
+            }
+        }
+        setListeners()
+        setObservers()
+    }
+
+    override fun showLoading() {
+        (requireActivity() as LoginActivity).showLoading()
+    }
+
+    override fun hideLoading() {
+        (requireActivity() as LoginActivity).hideLoading()
+    }
+
+    fun setListeners() {
         with(binding) {
             loginButton.setOnClickListener {
                 viewModel.login(
@@ -45,7 +66,7 @@ class LoginFragment : BaseFragment<LoginView, LoginViewModel>(), LoginView {
         }
     }
 
-    override fun setObservers() {
+    fun setObservers() {
         viewModel.login.observe(viewLifecycleOwner) {
             when (it) {
                 LoginResponse.SUCCESS -> {

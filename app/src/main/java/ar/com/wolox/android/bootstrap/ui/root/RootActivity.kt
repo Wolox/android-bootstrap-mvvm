@@ -1,13 +1,13 @@
 package ar.com.wolox.android.bootstrap.ui.root
 
 import androidx.activity.viewModels
-import ar.com.wolox.android.bootstrap.ui.base.BaseActivity
+import androidx.appcompat.app.AppCompatActivity
 import ar.com.wolox.android.bootstrap.ui.login.LoginActivity
 import ar.com.wolox.android.bootstrap.ui.posts.PostsActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RootActivity : BaseActivity() {
+class RootActivity : AppCompatActivity() {
 
     val viewModel: RootViewModel by viewModels()
 
