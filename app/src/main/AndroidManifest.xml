@@ -26,11 +26,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.login.LoginActivity"
-            android:windowSoftInputMode="adjustPan" />
-
-        <activity android:name=".ui.posts.PostsActivity" />
-
         <activity android:name="ar.com.wolox.wolmo.testing.hilt.HiltTestActivity" />
     </application>
 

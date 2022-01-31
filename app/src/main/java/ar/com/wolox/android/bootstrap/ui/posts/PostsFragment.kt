@@ -13,6 +13,7 @@ import ar.com.wolox.android.bootstrap.R
 import ar.com.wolox.android.bootstrap.databinding.FragmentPostsBinding
 import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 import ar.com.wolox.android.bootstrap.ui.adapter.PostsAdapter
+import ar.com.wolox.android.bootstrap.ui.root.RootActivity
 import ar.com.wolox.android.bootstrap.utils.SnackbarFactory
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,11 +46,11 @@ class PostsFragment : Fragment(), PostsView {
     }
 
     override fun showLoading() {
-        (requireActivity() as PostsActivity).showLoading()
+        (requireActivity() as RootActivity).showLoading()
     }
 
     override fun hideLoading() {
-        (requireActivity() as PostsActivity).hideLoading()
+        (requireActivity() as RootActivity).hideLoading()
     }
 
     fun setObservers() {

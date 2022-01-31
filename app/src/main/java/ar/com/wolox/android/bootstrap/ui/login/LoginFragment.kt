@@ -12,7 +12,8 @@ import ar.com.wolox.android.bootstrap.BuildConfig
 import ar.com.wolox.android.bootstrap.R
 import ar.com.wolox.android.bootstrap.databinding.FragmentLoginBinding
 import ar.com.wolox.android.bootstrap.network.util.RequestStatus
-import ar.com.wolox.android.bootstrap.ui.posts.PostsActivity
+import ar.com.wolox.android.bootstrap.ui.posts.PostsFragment
+import ar.com.wolox.android.bootstrap.ui.root.RootActivity
 import ar.com.wolox.android.bootstrap.utils.SnackbarFactory
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,11 +46,11 @@ class LoginFragment : Fragment(), LoginView {
     }
 
     override fun showLoading() {
-        (requireActivity() as LoginActivity).showLoading()
+        (requireActivity() as RootActivity).showLoading()
     }
 
     override fun hideLoading() {
-        (requireActivity() as LoginActivity).hideLoading()
+        (requireActivity() as RootActivity).hideLoading()
     }
 
     fun setListeners() {
@@ -71,7 +72,6 @@ class LoginFragment : Fragment(), LoginView {
             when (it) {
                 LoginResponse.SUCCESS -> {
                     goToPosts()
-                    requireActivity().finish()
                 }
                 LoginResponse.INVALID_CREDENTIALS -> showInvalidCredentialsError()
                 LoginResponse.INVALID_INPUT -> showInvalidInputError()
@@ -107,9 +107,7 @@ class LoginFragment : Fragment(), LoginView {
     }
 
     override fun goToPosts() {
-        with(Intent(requireContext(), PostsActivity::class.java)) {
-            startActivity(this)
-        }
+        (requireActivity() as RootActivity).replaceFragment(PostsFragment.newInstance())
     }
 
     companion object {
