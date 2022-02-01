@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ar.com.wolox.android.bootstrap.Constants
 import ar.com.wolox.android.bootstrap.model.Post
 import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 import ar.com.wolox.android.bootstrap.repository.PostRepository
+import ar.com.wolox.android.bootstrap.utils.SharedPreferencesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,29 +16,24 @@ import javax.inject.Inject
 @HiltViewModel
 class PostsViewModel @Inject constructor(
     private val postsRepository: PostRepository,
+    private val sharedPreferencesManager: SharedPreferencesManager
 ) : ViewModel() {
-
-    var view: PostsView? = null
-        private set
 
     private val _requestStatus = MutableLiveData<RequestStatus>()
     val requestStatus: LiveData<RequestStatus>
         get() = _requestStatus
 
-    fun toggleRequestStatus() {
+    private fun toggleRequestStatus() {
         _requestStatus.apply {
             value = if (value != RequestStatus.Loading) {
-                view?.showLoading()
                 RequestStatus.Loading
             } else {
-                view?.hideLoading()
                 RequestStatus.Finished
             }
         }
     }
 
-    fun onRequestFailed(error: Int) {
-        view?.hideLoading()
+    private fun onRequestFailed(error: Int) {
         _requestStatus.value = RequestStatus.Failure(error)
     }
 
@@ -56,4 +53,7 @@ class PostsViewModel @Inject constructor(
             }
         }
     }
+
+    val isUserLogged: Boolean
+        get() = sharedPreferencesManager[Constants.USER_IS_LOGGED_KEY, false]
 }

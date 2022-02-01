@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.com.wolox.android.bootstrap.Constants.INTERNAL_SERVER_ERROR_STATUS_CODE
 import ar.com.wolox.android.bootstrap.Constants.NOT_FOUND_STATUS_CODE
@@ -18,9 +19,11 @@ import ar.com.wolox.android.bootstrap.utils.SnackbarFactory
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PostsFragment : Fragment(), PostsView {
+class PostsFragment : Fragment() {
 
-    private lateinit var binding: FragmentPostsBinding
+    private var _binding: FragmentPostsBinding? = null
+
+    private val binding get() = _binding!!
 
     val viewModel: PostsViewModel by viewModels()
 
@@ -29,45 +32,58 @@ class PostsFragment : Fragment(), PostsView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPostsBinding.inflate(inflater)
-        getPosts()
+        _binding = FragmentPostsBinding.inflate(inflater)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.requestStatus.observe(viewLifecycleOwner) {
-            when (it) {
-                RequestStatus.Loading -> showLoading()
-                else -> hideLoading()
-            }
+
+        val navController = findNavController()
+
+        if (viewModel.isUserLogged) {
+            getPosts()
+        } else {
+            (requireActivity() as RootActivity).supportActionBar?.hide()
+            navController.navigate(R.id.login_fragment)
         }
+
         setObservers()
     }
 
-    override fun showLoading() {
+    private fun showLoading() {
         (requireActivity() as RootActivity).showLoading()
     }
 
-    override fun hideLoading() {
+    private fun hideLoading() {
         (requireActivity() as RootActivity).hideLoading()
     }
 
-    fun setObservers() {
+    private fun setObservers() {
         viewModel.requestStatus.observe(viewLifecycleOwner) {
-            if (it is RequestStatus.Failure) {
-                binding.postRecyclerView.visibility = View.GONE
-                when (it.error) {
-                    // Handle every possible error here
-                    NOT_FOUND_STATUS_CODE -> showErrorSnackbar()
-                    INTERNAL_SERVER_ERROR_STATUS_CODE -> showErrorSnackbar()
-                    else -> showErrorSnackbar()
+            when (it) {
+                RequestStatus.Loading -> showLoading()
+                is RequestStatus.Failure -> {
+                    hideLoading()
+                    binding.postRecyclerView.visibility = View.GONE
+                    when (it.error) {
+                        // Handle every possible error here
+                        NOT_FOUND_STATUS_CODE -> showErrorSnackbar()
+                        INTERNAL_SERVER_ERROR_STATUS_CODE -> showErrorSnackbar()
+                        else -> showErrorSnackbar()
+                    }
                 }
+                else -> hideLoading()
             }
         }
     }
 
-    override fun showErrorSnackbar() {
+    private fun showErrorSnackbar() {
         SnackbarFactory.create(
             binding.postRecyclerView,
             getString(R.string.posts_error),
@@ -75,7 +91,7 @@ class PostsFragment : Fragment(), PostsView {
         )
     }
 
-    override fun showEmptyListSnackbar() {
+    private fun showEmptyListSnackbar() {
         SnackbarFactory.create(
             binding.postRecyclerView,
             getString(R.string.no_posts_to_show),
@@ -103,9 +119,5 @@ class PostsFragment : Fragment(), PostsView {
                 }
             }
         }
-    }
-
-    companion object {
-        fun newInstance() = PostsFragment()
     }
 }

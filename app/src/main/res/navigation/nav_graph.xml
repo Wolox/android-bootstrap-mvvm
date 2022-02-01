@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/post_fragment">
+
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="ar.com.wolox.android.bootstrap.ui.login.LoginFragment"
+        tools:layout="@layout/fragment_login"/>
+
+    <fragment
+        android:id="@+id/post_fragment"
+        android:name="ar.com.wolox.android.bootstrap.ui.posts.PostsFragment"
+        tools:layout="@layout/fragment_posts"/>
+
+</navigation>

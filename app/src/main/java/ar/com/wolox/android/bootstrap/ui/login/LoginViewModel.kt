@@ -18,27 +18,21 @@ class LoginViewModel @Inject constructor(
     private val sharedPreferencesManager: SharedPreferencesManager
 ) : ViewModel() {
 
-    var view: LoginView? = null
-        private set
-
     private val _requestStatus = MutableLiveData<RequestStatus>()
     val requestStatus: LiveData<RequestStatus>
         get() = _requestStatus
 
-    fun toggleRequestStatus() {
+    private fun toggleRequestStatus() {
         _requestStatus.apply {
             value = if (value != RequestStatus.Loading) {
-                view?.showLoading()
                 RequestStatus.Loading
             } else {
-                view?.hideLoading()
                 RequestStatus.Finished
             }
         }
     }
 
     fun onRequestFailed(error: Int) {
-        view?.hideLoading()
         _requestStatus.value = RequestStatus.Failure(error)
     }
 
@@ -91,16 +85,6 @@ enum class LoginResponse {
 }
 
 enum class InputError {
-    EMPTY_USERNAME {
-        override fun showError(view: LoginView) {
-            view.showEmptyUsernameError()
-        }
-    },
-    EMPTY_PASSWORD {
-        override fun showError(view: LoginView) {
-            view.showEmptyPasswordError()
-        }
-    };
-
-    abstract fun showError(view: LoginView)
+    EMPTY_USERNAME,
+    EMPTY_PASSWORD
 }

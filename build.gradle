@@ -4,6 +4,7 @@ buildscript {
         kotlin_version = '1.5.21'
         hilt_plugin_version = '2.38.1'
         jacoco_version = '0.8.7'
+        nav_version = '2.4.0-alpha08'
     }
     repositories {
         google()

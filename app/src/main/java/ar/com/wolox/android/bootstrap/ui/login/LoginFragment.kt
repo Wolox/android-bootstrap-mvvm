@@ -8,19 +8,20 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import ar.com.wolox.android.bootstrap.BuildConfig
 import ar.com.wolox.android.bootstrap.R
 import ar.com.wolox.android.bootstrap.databinding.FragmentLoginBinding
 import ar.com.wolox.android.bootstrap.network.util.RequestStatus
-import ar.com.wolox.android.bootstrap.ui.posts.PostsFragment
 import ar.com.wolox.android.bootstrap.ui.root.RootActivity
 import ar.com.wolox.android.bootstrap.utils.SnackbarFactory
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginFragment : Fragment(), LoginView {
+class LoginFragment : Fragment() {
 
-    private lateinit var binding: FragmentLoginBinding
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
 
     val viewModel: LoginViewModel by viewModels()
 
@@ -29,31 +30,31 @@ class LoginFragment : Fragment(), LoginView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentLoginBinding.inflate(layoutInflater)
+        _binding = FragmentLoginBinding.inflate(layoutInflater)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.requestStatus.observe(viewLifecycleOwner) {
-            when (it) {
-                RequestStatus.Loading -> showLoading()
-                else -> hideLoading()
-            }
-        }
+
         setListeners()
         setObservers()
     }
 
-    override fun showLoading() {
+    private fun showLoading() {
         (requireActivity() as RootActivity).showLoading()
     }
 
-    override fun hideLoading() {
+    private fun hideLoading() {
         (requireActivity() as RootActivity).hideLoading()
     }
 
-    fun setListeners() {
+    private fun setListeners() {
         with(binding) {
             loginButton.setOnClickListener {
                 viewModel.login(
@@ -67,12 +68,17 @@ class LoginFragment : Fragment(), LoginView {
         }
     }
 
-    fun setObservers() {
+    private fun setObservers() {
+        viewModel.requestStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                RequestStatus.Loading -> showLoading()
+                else -> hideLoading()
+            }
+        }
+
         viewModel.login.observe(viewLifecycleOwner) {
             when (it) {
-                LoginResponse.SUCCESS -> {
-                    goToPosts()
-                }
+                LoginResponse.SUCCESS -> goToPosts()
                 LoginResponse.INVALID_CREDENTIALS -> showInvalidCredentialsError()
                 LoginResponse.INVALID_INPUT -> showInvalidInputError()
                 else -> showServerError()
@@ -80,37 +86,36 @@ class LoginFragment : Fragment(), LoginView {
         }
     }
 
-    override fun showEmptyUsernameError() {
+    private fun showEmptyUsernameError() {
         binding.usernameInput.error = getString(R.string.empty_username_error)
     }
 
-    override fun showEmptyPasswordError() {
+    private fun showEmptyPasswordError() {
         binding.passwordInput.error = getString(R.string.empty_password_error)
     }
 
-    override fun showInvalidInputError() {
-        viewModel.inputErrors.forEach {
-            it.showError(this)
+    private fun showInvalidInputError() {
+        viewModel.inputErrors.forEach { error ->
+            when (error) {
+                InputError.EMPTY_USERNAME -> showEmptyUsernameError()
+                InputError.EMPTY_PASSWORD -> showEmptyPasswordError()
+            }
         }
     }
 
-    override fun showInvalidCredentialsError() {
+    private fun showInvalidCredentialsError() {
         SnackbarFactory.create(binding.loginButton, getString(R.string.invalid_credentials), getString(R.string.ok))
     }
 
-    override fun showServerError() {
+    private fun showServerError() {
         SnackbarFactory.create(binding.loginButton, getString(R.string.server_error), getString(R.string.ok))
     }
 
-    override fun goToWoloxSite() = with(Intent(Intent.ACTION_VIEW, BuildConfig.WOLOX_URL.toUri())) {
+    private fun goToWoloxSite() = with(Intent(Intent.ACTION_VIEW, BuildConfig.WOLOX_URL.toUri())) {
         startActivity(this)
     }
 
-    override fun goToPosts() {
-        (requireActivity() as RootActivity).replaceFragment(PostsFragment.newInstance())
-    }
-
-    companion object {
-        fun newInstance() = LoginFragment()
+    private fun goToPosts() {
+        findNavController().navigate(R.id.post_fragment)
     }
 }
