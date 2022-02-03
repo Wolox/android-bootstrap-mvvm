@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +16,7 @@ import ar.com.wolox.android.bootstrap.R
 import ar.com.wolox.android.bootstrap.databinding.FragmentPostsBinding
 import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 import ar.com.wolox.android.bootstrap.ui.adapter.PostsAdapter
-import ar.com.wolox.android.bootstrap.ui.root.RootActivity
+import ar.com.wolox.android.bootstrap.ui.root.RootViewModel
 import ar.com.wolox.android.bootstrap.utils.SnackbarFactory
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,6 +28,7 @@ class PostsFragment : Fragment() {
     private val binding get() = _binding!!
 
     val viewModel: PostsViewModel by viewModels()
+    private val rootViewModel: RootViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,9 +48,11 @@ class PostsFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         if (viewModel.isUserLogged) {
+            // TODO: Is there a better way to always show the actionbar in a particular fragment?
+            (requireActivity() as AppCompatActivity).supportActionBar?.show()
             getPosts()
         } else {
-            (requireActivity() as RootActivity).supportActionBar?.hide()
+            (requireActivity() as AppCompatActivity).supportActionBar?.hide()
             findNavController().navigate(R.id.login_fragment)
         }
 
@@ -55,11 +60,11 @@ class PostsFragment : Fragment() {
     }
 
     private fun showLoading() {
-        (requireActivity() as RootActivity).showLoading()
+        rootViewModel.showLoading()
     }
 
     private fun hideLoading() {
-        (requireActivity() as RootActivity).hideLoading()
+        rootViewModel.hideLoading()
     }
 
     private fun setObservers() {

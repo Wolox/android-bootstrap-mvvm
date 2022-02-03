@@ -7,13 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ar.com.wolox.android.bootstrap.BuildConfig
 import ar.com.wolox.android.bootstrap.R
 import ar.com.wolox.android.bootstrap.databinding.FragmentLoginBinding
 import ar.com.wolox.android.bootstrap.network.util.RequestStatus
-import ar.com.wolox.android.bootstrap.ui.root.RootActivity
+import ar.com.wolox.android.bootstrap.ui.root.RootViewModel
 import ar.com.wolox.android.bootstrap.utils.SnackbarFactory
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,6 +25,7 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
 
     val viewModel: LoginViewModel by viewModels()
+    private val rootViewModel: RootViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,11 +49,11 @@ class LoginFragment : Fragment() {
     }
 
     private fun showLoading() {
-        (requireActivity() as RootActivity).showLoading()
+        rootViewModel.showLoading()
     }
 
     private fun hideLoading() {
-        (requireActivity() as RootActivity).hideLoading()
+        rootViewModel.hideLoading()
     }
 
     private fun setListeners() {
