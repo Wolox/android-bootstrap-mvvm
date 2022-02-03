@@ -44,13 +44,11 @@ class PostsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val navController = findNavController()
-
         if (viewModel.isUserLogged) {
             getPosts()
         } else {
             (requireActivity() as RootActivity).supportActionBar?.hide()
-            navController.navigate(R.id.login_fragment)
+            findNavController().navigate(R.id.login_fragment)
         }
 
         setObservers()
