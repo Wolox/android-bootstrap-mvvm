@@ -35,13 +35,17 @@ class RootActivity : AppCompatActivity() {
         )
     }
 
-    fun showLoading() {
-        binding.loading.visibility = View.VISIBLE
-        binding.fragmentContainer.visibility = View.GONE
+    private fun showLoading() {
+        binding.apply {
+            loading.visibility = View.VISIBLE
+            fragmentContainer.visibility = View.GONE
+        }
     }
 
-    fun hideLoading() {
-        binding.loading.visibility = View.GONE
-        binding.fragmentContainer.visibility = View.VISIBLE
+    private fun hideLoading() {
+        binding.apply {
+            loading.visibility = View.GONE
+            fragmentContainer.visibility = View.VISIBLE
+        }
     }
 }
