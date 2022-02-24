@@ -3,7 +3,6 @@ package ar.com.wolox.android.bootstrap.ui.posts
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -19,26 +18,11 @@ import ar.com.wolox.android.bootstrap.utils.SnackbarFactory
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PostsFragment : BaseFragment<PostsViewModel>() {
-
-    private var _binding: FragmentPostsBinding? = null
-    private val binding get() = _binding!!
+class PostsFragment : BaseFragment<FragmentPostsBinding, PostsViewModel>() {
 
     override val viewModel: PostsViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentPostsBinding.inflate(inflater)
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+    override fun setBinding(inflater: LayoutInflater) = FragmentPostsBinding.inflate(inflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
