@@ -6,26 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ar.com.wolox.android.bootstrap.BuildConfig
 import ar.com.wolox.android.bootstrap.R
 import ar.com.wolox.android.bootstrap.databinding.FragmentLoginBinding
-import ar.com.wolox.android.bootstrap.network.util.RequestStatus
-import ar.com.wolox.android.bootstrap.ui.root.RootViewModel
+import ar.com.wolox.android.bootstrap.ui.base.BaseFragment
 import ar.com.wolox.android.bootstrap.utils.SnackbarFactory
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment<LoginViewModel>() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    val viewModel: LoginViewModel by viewModels()
-    private val rootViewModel: RootViewModel by activityViewModels()
+    override val viewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,22 +37,7 @@ class LoginFragment : Fragment() {
         _binding = null
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setListeners()
-        setObservers()
-    }
-
-    private fun showLoading() {
-        rootViewModel.showLoading()
-    }
-
-    private fun hideLoading() {
-        rootViewModel.hideLoading()
-    }
-
-    private fun setListeners() {
+    override fun setListeners() {
         with(binding) {
             loginButton.setOnClickListener {
                 viewModel.login(
@@ -70,14 +51,7 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun setObservers() {
-        viewModel.requestStatus.observe(viewLifecycleOwner) {
-            when (it) {
-                RequestStatus.Loading -> showLoading()
-                else -> hideLoading()
-            }
-        }
-
+    override fun setObservers() {
         viewModel.login.observe(viewLifecycleOwner) {
             when (it) {
                 LoginResponse.SUCCESS -> goToPosts()

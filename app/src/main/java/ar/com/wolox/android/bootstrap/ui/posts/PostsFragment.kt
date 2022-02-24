@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,19 +14,17 @@ import ar.com.wolox.android.bootstrap.R
 import ar.com.wolox.android.bootstrap.databinding.FragmentPostsBinding
 import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 import ar.com.wolox.android.bootstrap.ui.adapter.PostsAdapter
-import ar.com.wolox.android.bootstrap.ui.root.RootViewModel
+import ar.com.wolox.android.bootstrap.ui.base.BaseFragment
 import ar.com.wolox.android.bootstrap.utils.SnackbarFactory
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PostsFragment : Fragment() {
+class PostsFragment : BaseFragment<PostsViewModel>() {
 
     private var _binding: FragmentPostsBinding? = null
-
     private val binding get() = _binding!!
 
-    val viewModel: PostsViewModel by viewModels()
-    private val rootViewModel: RootViewModel by activityViewModels()
+    override val viewModel: PostsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,34 +41,22 @@ class PostsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
 
         if (viewModel.isUserLogged) {
             // TODO: Is there a better way to always show the actionbar in a particular fragment?
             (requireActivity() as AppCompatActivity).supportActionBar?.show()
-            getPosts()
+            viewModel.getPosts()
         } else {
             (requireActivity() as AppCompatActivity).supportActionBar?.hide()
             findNavController().navigate(R.id.login_fragment)
         }
-
-        setObservers()
     }
 
-    private fun showLoading() {
-        rootViewModel.showLoading()
-    }
-
-    private fun hideLoading() {
-        rootViewModel.hideLoading()
-    }
-
-    private fun setObservers() {
-        viewModel.requestStatus.observe(viewLifecycleOwner) {
-            when (it) {
-                RequestStatus.Loading -> showLoading()
-                is RequestStatus.Failure -> {
-                    hideLoading()
+    override fun setObservers() {
+        viewModel.apply {
+            requestStatus.observe(viewLifecycleOwner) {
+                if (it is RequestStatus.Failure) {
                     binding.postRecyclerView.visibility = View.GONE
                     when (it.error) {
                         // Handle every possible error here
@@ -81,7 +65,23 @@ class PostsFragment : Fragment() {
                         else -> showErrorSnackbar()
                     }
                 }
-                else -> hideLoading()
+            }
+
+            posts.observe(viewLifecycleOwner) {
+                if (it.isNotEmpty()) {
+                    binding.postRecyclerView.apply {
+                        adapter = PostsAdapter().apply {
+                            submitList(it)
+                        }
+                        layoutManager = LinearLayoutManager(requireContext())
+                        isNestedScrollingEnabled = false
+                        isFocusable = false
+                        visibility = View.VISIBLE
+                    }
+                } else {
+                    binding.postRecyclerView.visibility = View.GONE
+                    showEmptyListSnackbar()
+                }
             }
         }
     }
@@ -100,27 +100,5 @@ class PostsFragment : Fragment() {
             getString(R.string.no_posts_to_show),
             getString(R.string.ok)
         )
-    }
-
-    private fun getPosts() {
-        viewModel.apply {
-            getPosts()
-            posts.observe(viewLifecycleOwner) {
-                if (it.isNotEmpty()) {
-                    binding.postRecyclerView.apply {
-                        adapter = PostsAdapter().apply {
-                            submitList(it)
-                        }
-                        layoutManager = LinearLayoutManager(requireContext())
-                        isNestedScrollingEnabled = false
-                        isFocusable = false
-                        visibility = View.VISIBLE
-                    }
-                } else {
-                    binding.postRecyclerView.visibility = View.GONE
-                    showEmptyListSnackbar()
-                }
-            }
-        }
     }
 }
