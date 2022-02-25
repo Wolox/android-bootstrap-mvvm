@@ -1,22 +1,51 @@
 package ar.com.wolox.android.bootstrap.ui.root
 
+import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
-import ar.com.wolox.android.bootstrap.ui.base.BaseActivity
-import ar.com.wolox.android.bootstrap.ui.login.LoginActivity
-import ar.com.wolox.android.bootstrap.ui.posts.PostsActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import ar.com.wolox.android.bootstrap.databinding.ActivityBaseBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RootActivity : BaseActivity() {
+class RootActivity : AppCompatActivity() {
 
-    val viewModel: RootViewModel by viewModels()
+    private lateinit var binding: ActivityBaseBinding
 
-    override fun onResume() {
-        super.onResume()
-        if (viewModel.isUserLogged) {
-            PostsActivity.start(this)
-        } else {
-            LoginActivity.start(this)
+    private val viewModel: RootViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityBaseBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        viewModel.showLoadingLiveData.observe(
+            this,
+            Observer {
+                showLoading()
+            }
+        )
+
+        viewModel.hideLoadingLiveData.observe(
+            this,
+            Observer {
+                hideLoading()
+            }
+        )
+    }
+
+    private fun showLoading() {
+        binding.apply {
+            loading.visibility = View.VISIBLE
+            fragmentContainer.visibility = View.GONE
+        }
+    }
+
+    private fun hideLoading() {
+        binding.apply {
+            loading.visibility = View.GONE
+            fragmentContainer.visibility = View.VISIBLE
         }
     }
 }

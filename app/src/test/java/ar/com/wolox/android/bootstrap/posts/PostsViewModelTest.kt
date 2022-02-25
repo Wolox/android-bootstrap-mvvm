@@ -2,28 +2,44 @@ package ar.com.wolox.android.bootstrap.posts
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import ar.com.wolox.android.bootstrap.Constants.INTERNAL_SERVER_ERROR_STATUS_CODE
-import ar.com.wolox.android.bootstrap.base.BaseViewModelTest
 import ar.com.wolox.android.bootstrap.base.MainCoroutineRule
 import ar.com.wolox.android.bootstrap.login.LoginTestConstants.ERROR_RESPONSE
 import ar.com.wolox.android.bootstrap.network.util.RequestStatus
 import ar.com.wolox.android.bootstrap.posts.PostsTestsConstants.SUCCESSFUL_POSTS_RESPONSE
 import ar.com.wolox.android.bootstrap.repository.PostRepository
-import ar.com.wolox.android.bootstrap.ui.posts.PostsView
 import ar.com.wolox.android.bootstrap.ui.posts.PostsViewModel
+import ar.com.wolox.android.bootstrap.utils.SharedPreferencesManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody.Companion.toResponseBody
+import org.junit.After
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import retrofit2.Response
 
 @ExperimentalCoroutinesApi
-class PostsViewModelTest : BaseViewModelTest<PostsView, PostsViewModel>() {
+class PostsViewModelTest {
+
+    private lateinit var viewModel: PostsViewModel
+
+    @Before
+    fun setUp() {
+        MockitoAnnotations.openMocks(this)
+        viewModel = getViewModelInstance()
+    }
+
+    @After
+    fun tearDown() {
+        Mockito.validateMockitoUsage()
+    }
 
     @get:Rule
     val coroutineTestRule = MainCoroutineRule()
@@ -34,7 +50,10 @@ class PostsViewModelTest : BaseViewModelTest<PostsView, PostsViewModel>() {
     @Mock
     lateinit var repository: PostRepository
 
-    override fun getViewModelInstance(): PostsViewModel = PostsViewModel(repository)
+    @Mock
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
+
+    private fun getViewModelInstance(): PostsViewModel = PostsViewModel(repository, sharedPreferencesManager)
 
     @Test
     fun `given an empty response, then no posts are shown`() = runBlocking {

@@ -15,7 +15,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val sharedPreferencesManager: SharedPreferencesManager
-) : BaseViewModel<LoginView>() {
+) : BaseViewModel() {
 
     val inputErrors = arrayListOf<InputError>()
 
@@ -66,16 +66,6 @@ enum class LoginResponse {
 }
 
 enum class InputError {
-    EMPTY_USERNAME {
-        override fun showError(view: LoginView) {
-            view.showEmptyUsernameError()
-        }
-    },
-    EMPTY_PASSWORD {
-        override fun showError(view: LoginView) {
-            view.showEmptyPasswordError()
-        }
-    };
-
-    abstract fun showError(view: LoginView)
+    EMPTY_USERNAME,
+    EMPTY_PASSWORD
 }

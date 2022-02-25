@@ -19,17 +19,13 @@
         <activity
             android:name=".ui.root.RootActivity"
             android:exported="true">
+            <nav-graph android:value="@navigation/nav_graph" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.login.LoginActivity"
-            android:windowSoftInputMode="adjustPan" />
-
-        <activity android:name=".ui.posts.PostsActivity" />
 
         <activity android:name="ar.com.wolox.wolmo.testing.hilt.HiltTestActivity" />
     </application>

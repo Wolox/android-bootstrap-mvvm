@@ -1,13 +1,41 @@
 package ar.com.wolox.android.bootstrap.ui.base
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import ar.com.wolox.android.bootstrap.network.util.RequestStatus
+import ar.com.wolox.android.bootstrap.ui.root.RootViewModel
 
-abstract class BaseFragment<V : BaseView, M : BaseViewModel<V>> : Fragment(), BaseView {
+abstract class BaseFragment<V : ViewDataBinding, M : BaseViewModel> : Fragment() {
 
     abstract val viewModel: M
+
+    private val rootViewModel: RootViewModel by activityViewModels()
+
+    private var _binding: V? = null
+    val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+
+        _binding = this.setBinding(inflater)
+        return binding.root
+    }
+
+    abstract fun setBinding(inflater: LayoutInflater): V
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     open fun setListeners() { }
 
@@ -25,11 +53,11 @@ abstract class BaseFragment<V : BaseView, M : BaseViewModel<V>> : Fragment(), Ba
         setObservers()
     }
 
-    override fun showLoading() {
-        (requireActivity() as BaseActivity).showLoading()
+    private fun showLoading() {
+        rootViewModel.showLoading()
     }
 
-    override fun hideLoading() {
-        (requireActivity() as BaseActivity).hideLoading()
+    private fun hideLoading() {
+        rootViewModel.hideLoading()
     }
 }

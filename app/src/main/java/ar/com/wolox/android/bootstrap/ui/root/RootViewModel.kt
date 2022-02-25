@@ -1,17 +1,18 @@
 package ar.com.wolox.android.bootstrap.ui.root
 
-import ar.com.wolox.android.bootstrap.Constants
-import ar.com.wolox.android.bootstrap.ui.base.BaseView
-import ar.com.wolox.android.bootstrap.ui.base.BaseViewModel
-import ar.com.wolox.android.bootstrap.utils.SharedPreferencesManager
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-@HiltViewModel
-class RootViewModel @Inject constructor(
-    private val sharedPreferencesManager: SharedPreferencesManager
-) : BaseViewModel<BaseView>() {
+class RootViewModel : ViewModel() {
 
-    val isUserLogged: Boolean
-        get() = sharedPreferencesManager[Constants.USER_IS_LOGGED_KEY, false]
+    val showLoadingLiveData = MutableLiveData<Unit>()
+    val hideLoadingLiveData = MutableLiveData<Unit>()
+
+    fun showLoading() {
+        showLoadingLiveData.value = Unit
+    }
+
+    fun hideLoading() {
+        hideLoadingLiveData.value = Unit
+    }
 }
