@@ -16,13 +16,11 @@ open class BaseActivity : AppCompatActivity() {
             .commit()
     }
 
-    // TODO: Replace with View Binding
     fun showLoading() {
         findViewById<ProgressBar>(R.id.loading).visibility = View.VISIBLE
         findViewById<FrameLayout>(R.id.fragmentContainer).visibility = View.GONE
     }
 
-    // TODO: Replace with View Binding
     fun hideLoading() {
         findViewById<ProgressBar>(R.id.loading).visibility = View.GONE
         findViewById<FrameLayout>(R.id.fragmentContainer).visibility = View.VISIBLE

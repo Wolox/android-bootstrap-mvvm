@@ -54,9 +54,14 @@ class PostsViewModelTest : BaseViewModelTest<PostsView, PostsViewModel>() {
 
     @Test
     fun `given an unsuccessful response, then an error message is shown`() = runBlocking {
-        whenever(repository.getPosts()).thenReturn(Response.error(INTERNAL_SERVER_ERROR_STATUS_CODE, ERROR_RESPONSE.toResponseBody()))
+        whenever(repository.getPosts()).thenReturn(
+            Response.error(INTERNAL_SERVER_ERROR_STATUS_CODE, ERROR_RESPONSE.toResponseBody())
+        )
         viewModel.getPosts()
         verify(repository, times(1)).getPosts()
-        Assert.assertEquals(INTERNAL_SERVER_ERROR_STATUS_CODE, (viewModel.requestStatus.value as RequestStatus.Failure).error)
+        Assert.assertEquals(
+            INTERNAL_SERVER_ERROR_STATUS_CODE,
+            (viewModel.requestStatus.value as RequestStatus.Failure).error
+        )
     }
 }

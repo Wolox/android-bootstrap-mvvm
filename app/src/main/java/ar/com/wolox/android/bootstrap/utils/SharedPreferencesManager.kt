@@ -3,7 +3,6 @@ package ar.com.wolox.android.bootstrap.utils
 import android.content.SharedPreferences
 import javax.inject.Inject
 
-// TODO: Move this class to Wolmo.
 class SharedPreferencesManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
 
     fun store(key: String, value: String?) = sharedPreferences.edit().putString(key, value).apply()
