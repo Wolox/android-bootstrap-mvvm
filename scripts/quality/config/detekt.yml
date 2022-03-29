@@ -150,11 +150,11 @@ complexity:
 coroutines:
   active: true
   GlobalCoroutineUsage:
-    active: false
+    active: true
   RedundantSuspendModifier:
-    active: false
+    active: true
   SleepInsteadOfDelay:
-    active: false
+    active: true
   SuspendFunWithFlowReturnType:
     active: false
 
@@ -206,7 +206,7 @@ exceptions:
     active: false
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
   NotImplementedDeclaration:
-    active: false
+    active: true
   ObjectExtendsThrowable:
     active: false
   PrintStackTrace:
@@ -427,7 +427,7 @@ potential-bugs:
   UnsafeCast:
     active: true
   UnusedUnaryOperator:
-    active: false
+    active: true
   UselessPostfixExpression:
     active: false
   WrongEqualsTypeParameter:
@@ -591,7 +591,7 @@ style:
   UnnecessaryLet:
     active: false
   UnnecessaryParentheses:
-    active: false
+    active: true
   UntilInsteadOfRangeTo:
     active: false
   UnusedImports:
@@ -615,7 +615,7 @@ style:
   UseIfEmptyOrIfBlank:
     active: false
   UseIfInsteadOfWhen:
-    active: false
+    active: true
   UseIsNullOrEmpty:
     active: false
   UseOrEmpty:
