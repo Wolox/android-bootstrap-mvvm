@@ -615,7 +615,7 @@ style:
   UseIfEmptyOrIfBlank:
     active: false
   UseIfInsteadOfWhen:
-    active: true
+    active: false
   UseIsNullOrEmpty:
     active: false
   UseOrEmpty:
