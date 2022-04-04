@@ -39,7 +39,7 @@ class PostsAdapter :
         }
     }
 
-    private fun isLastPosition(position: Int) = (itemCount - 1 == position)
+    private fun isLastPosition(position: Int) = itemCount - 1 == position
 
     inner class PostViewHolder(
         binding: ViewholderPostBinding,

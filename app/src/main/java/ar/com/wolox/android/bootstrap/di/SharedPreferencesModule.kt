@@ -27,9 +27,10 @@ class SharedPreferencesModule {
         )
             .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
             .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-            .setKeySize(256)
+            .setKeySize(KEY_SIZE)
             .build()
-        val masterKey = MasterKey.Builder(context, BuildConfig.KEYSTORE_ALIAS).setKeyGenParameterSpec(keyGenSpec).build()
+        val masterKey = MasterKey.Builder(context, BuildConfig.KEYSTORE_ALIAS)
+            .setKeyGenParameterSpec(keyGenSpec).build()
         return EncryptedSharedPreferences.create(
             context,
             BuildConfig.SHARED_PREFERENCES_FILE_NAME,
@@ -37,5 +38,9 @@ class SharedPreferencesModule {
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
+    }
+
+    companion object {
+        private const val KEY_SIZE = 256
     }
 }
