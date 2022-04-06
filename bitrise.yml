@@ -2,12 +2,29 @@ format_version: '11'
 default_step_lib_source: 'https://github.com/bitrise-io/bitrise-steplib.git'
 project_type: android
 trigger_map:
+  - push_branch: main
+    workflow: build_apk
   - push_branch: '*'
     workflow: check
   - pull_request_source_branch: '*'
     workflow: check
     pull_request_target_branch: main
 workflows:
+  build_apk:
+    steps:
+      - activate-ssh-key@4:
+          run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+      - git-clone@6: {}
+      - cache-pull@2: {}
+      - install-missing-android-tools@3.0:
+          inputs:
+            - gradlew_path: $PROJECT_LOCATION/gradlew
+      - android-build@1:
+          inputs:
+            - variant: debug
+            - module: app
+      - deploy-to-bitrise-io@2: {}
+      - cache-push@2: {}
   check:
     steps:
       - activate-ssh-key@4:
@@ -25,12 +42,18 @@ workflows:
                 set -x
                 ./gradlew ktlint
       - script@1:
-            title: Test
-            inputs:
-              - content: |-
-                  set -e
-                  set -x
-                  ./gradlew testDebugUnitTest
+          inputs:
+            - content: |-
+                set -e
+                set -x
+                ./gradlew detekt
+      - script@1:
+          title: Test
+          inputs:
+            - content: |-
+                set -e
+                set -x
+                ./gradlew testDebugUnitTest
       - deploy-to-bitrise-io@2: {}
       - cache-push@2: {}
 meta:
