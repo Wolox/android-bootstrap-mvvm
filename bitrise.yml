@@ -3,9 +3,7 @@ default_step_lib_source: 'https://github.com/bitrise-io/bitrise-steplib.git'
 project_type: android
 trigger_map:
   - push_branch: main
-    workflow: build_apk
-  - push_branch: '*'
-    workflow: check
+    workflow: publish
   - pull_request_source_branch: '*'
     workflow: check
     pull_request_target_branch: main
@@ -19,6 +17,20 @@ workflows:
       - install-missing-android-tools@3.0:
           inputs:
             - gradlew_path: $PROJECT_LOCATION/gradlew
+      - script@1:
+          title: Lint
+          inputs:
+            - content: |-
+                set -e
+                set -x
+                ./gradlew ktlint
+      - script@1:
+          title: Test
+          inputs:
+            - content: |-
+                set -e
+                set -x
+                ./gradlew testDebugUnitTest
       - android-build@1:
           inputs:
             - variant: debug
@@ -44,6 +56,7 @@ workflows:
       - script@1:
           inputs:
             - content: |-
+                #!/usr/bin/env bash
                 set -e
                 set -x
                 ./gradlew detekt
@@ -55,6 +68,42 @@ workflows:
                 set -x
                 ./gradlew testDebugUnitTest
       - deploy-to-bitrise-io@2: {}
+      - cache-push@2: {}
+  publish:
+    steps:
+      - activate-ssh-key@4:
+          run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+      - git-clone@6: {}
+      - cache-pull@2: {}
+      - install-missing-android-tools@3.0:
+          inputs:
+            - gradlew_path: $PROJECT_LOCATION/gradlew
+      - script@1:
+          title: Lint
+          inputs:
+            - content: |-
+                set -e
+                set -x
+                ./gradlew ktlint
+      - script@1:
+          title: Test
+          inputs:
+            - content: |-
+                set -e
+                set -x
+                ./gradlew testDebugUnitTest
+      - android-build@1:
+          inputs:
+            - variant: debug
+            - module: app
+      - appcenter-deploy-android@2:
+          inputs:
+            - owner_name: $APPCENTER_OWNER_NAME
+            - app_name: $APPCENTER_APP_NAME
+            - distribution_group: $APPCENTER_DIST_GROUP
+            - debug: 'yes'
+            - app_path: $BITRISE_APK_PATH
+            - api_token: $APPCENTER_API_KEY
       - cache-push@2: {}
 meta:
   bitrise.io:
