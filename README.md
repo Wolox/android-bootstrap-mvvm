@@ -25,7 +25,7 @@ This project is developed and maintained by [Wolox](http://www.wolox.com.ar).
 
 ## <a name="topic-license"></a> License
 
-**Wolox Bootstrap MVVM** is available under the MIT [license](https://raw.githubusercontent.com/Wolox/android-bootstrap-mvvm/main/LICENSE.md).
+**Wolox Bootstrap - MVVM** is available under the MIT [license](https://raw.githubusercontent.com/Wolox/android-bootstrap-mvvm/main/LICENSE.md).
 
     Copyright (c) Wolox S.A
 
