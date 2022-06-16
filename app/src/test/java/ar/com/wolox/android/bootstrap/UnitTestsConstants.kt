@@ -1,6 +1,6 @@
-package ar.com.wolox.android.bootstrap.utils
+package ar.com.wolox.android.bootstrap
 
-object UtilsTestsConstants {
+object UnitTestsConstants {
 
     const val MOCK_STRING = "String"
     const val MOCK_INT = 123

@@ -1,6 +1,7 @@
 package ar.com.wolox.android.bootstrap.utils
 
 import android.content.SharedPreferences
+import ar.com.wolox.android.bootstrap.UnitTestsConstants
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -41,7 +42,7 @@ class SharedPreferencesManagerTest {
 
     @Test
     fun getShouldCallSharedPreferences() {
-        with(UtilsTestsConstants) {
+        with(UnitTestsConstants) {
             whenever(sharedPreferences.getBoolean(anyString(), anyBoolean())).thenReturn(
                 MOCK_BOOLEAN
             )
@@ -60,7 +61,7 @@ class SharedPreferencesManagerTest {
 
     @Test
     fun storeShouldCallEditor() {
-        with(UtilsTestsConstants) {
+        with(UnitTestsConstants) {
             sharedPreferencesManager.store(KEY_LONG, MOCK_LONG)
             sharedPreferencesManager.store(KEY_FLOAT, MOCK_FLOAT)
             sharedPreferencesManager.store(KEY_STRING, MOCK_STRING)
@@ -77,7 +78,7 @@ class SharedPreferencesManagerTest {
 
     @Test
     fun clearKeyShouldCallEditor() {
-        with(UtilsTestsConstants) {
+        with(UnitTestsConstants) {
             sharedPreferencesManager.clearKey(KEY_TO_CLEAN)
             verify(editor, times(1)).remove(eq(KEY_TO_CLEAN))
             verify(editor, times(1)).apply()
@@ -86,7 +87,7 @@ class SharedPreferencesManagerTest {
 
     @Test
     fun keyExistsShouldCallSharedPreferences() {
-        with(UtilsTestsConstants) {
+        with(UnitTestsConstants) {
             whenever(sharedPreferences.contains(eq(EXISTENT_KEY))).thenReturn(true)
             Assert.assertTrue(sharedPreferencesManager.keyExists(EXISTENT_KEY))
             Assert.assertFalse(sharedPreferencesManager.keyExists(NON_EXISTENT_KEY))
