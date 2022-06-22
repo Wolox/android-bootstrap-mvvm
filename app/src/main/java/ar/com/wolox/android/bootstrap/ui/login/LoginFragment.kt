@@ -47,14 +47,11 @@ class LoginFragment : BaseFragment<LoginView, LoginViewModel>(), LoginView {
 
     override fun setObservers() {
         viewModel.login.observe(viewLifecycleOwner) {
-            when (it) {
-                LoginResponse.SUCCESS -> {
-                    goToPosts()
-                    requireActivity().finish()
-                }
-                LoginResponse.INVALID_CREDENTIALS -> showInvalidCredentialsError()
+            when (it!!) {
+                LoginResponse.FAILURE -> showServerError()
                 LoginResponse.INVALID_INPUT -> showInvalidInputError()
-                else -> showServerError()
+                LoginResponse.INVALID_CREDENTIALS -> showInvalidCredentialsError()
+                else -> goToPosts()
             }
         }
     }
@@ -74,11 +71,19 @@ class LoginFragment : BaseFragment<LoginView, LoginViewModel>(), LoginView {
     }
 
     override fun showInvalidCredentialsError() {
-        SnackbarFactory.create(binding.loginButton, getString(R.string.invalid_credentials), getString(R.string.ok))
+        SnackbarFactory.create(
+            binding.loginButton,
+            getString(R.string.invalid_credentials),
+            getString(R.string.ok)
+        )
     }
 
     override fun showServerError() {
-        SnackbarFactory.create(binding.loginButton, getString(R.string.server_error), getString(R.string.ok))
+        SnackbarFactory.create(
+            binding.loginButton,
+            getString(R.string.server_error),
+            getString(R.string.ok)
+        )
     }
 
     override fun goToWoloxSite() = with(Intent(Intent.ACTION_VIEW, BuildConfig.WOLOX_URL.toUri())) {
@@ -89,6 +94,7 @@ class LoginFragment : BaseFragment<LoginView, LoginViewModel>(), LoginView {
         with(Intent(requireContext(), PostsActivity::class.java)) {
             startActivity(this)
         }
+        requireActivity().finish()
     }
 
     companion object {
