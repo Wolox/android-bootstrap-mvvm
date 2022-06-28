@@ -104,6 +104,8 @@ class LoginViewModelTest : BaseViewModelTest<LoginView, LoginViewModel>() {
         viewModel.login(EMPTY_USERNAME, EMPTY_PASSWORD)
         verifyNoInteractions(repository)
         Assert.assertEquals(2, viewModel.inputErrors.size)
+        Assert.assertEquals(InputError.EMPTY_USERNAME, viewModel.inputErrors.first())
+        Assert.assertEquals(InputError.EMPTY_PASSWORD, viewModel.inputErrors[1])
         Assert.assertEquals(LoginResponse.INVALID_INPUT, viewModel.login.value)
     }
 }

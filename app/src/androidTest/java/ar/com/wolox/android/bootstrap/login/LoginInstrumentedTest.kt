@@ -1,6 +1,9 @@
 package ar.com.wolox.android.bootstrap.login
 
 import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import ar.com.wolox.android.bootstrap.BuildConfig
 import ar.com.wolox.android.bootstrap.Constants.USERS_PATH
@@ -153,6 +156,7 @@ class LoginInstrumentedTest : BaseInstrumentedTest() {
             writeText(R.id.passwordInput, VALID_PASSWORD)
             singleClick(R.id.loginButton)
             checkPopUpText(R.string.invalid_credentials)
+            onView(withText(R.string.ok)).perform(click())
         }
     }
 

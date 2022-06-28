@@ -9,7 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RootActivity : BaseActivity() {
 
-    val viewModel: RootViewModel by viewModels()
+    private val viewModel: RootViewModel by viewModels()
 
     override fun onResume() {
         super.onResume()

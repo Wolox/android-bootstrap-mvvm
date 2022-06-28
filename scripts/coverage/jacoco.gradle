@@ -1,10 +1,33 @@
 apply plugin: 'jacoco'
 
+def excludes =
+        [
+                '**/R.class',
+                '**/R$*.class',
+                '**/BuildConfig.*',
+                '**/Manifest*.*',
+                'android/**/*.*',
+                '**/deserializer/**',
+                '**/models/**', '**/model/**', '**/model/**/*.*',
+                '**/extensions/**',
+                '**/*Companion*.*',
+                '**/*$ViewInjector*.*', '**/*$ViewBinder*.*', '**/**_ViewBinding**',
+                '**/*$Lambda$*.*',
+                '**/*_Provide*Factory*.*',
+                '**/*$*$*.*',
+                '**/*Exception*.*',
+                '**/*Test*.*', 'androidTest/**/*.*', 'test/**/*.*',
+                '**/injector/**/*.*',
+                '**/mock/**/*.*', '**/**Mocked',
+                '**/di/**/*.*',
+                '**/*Application.*'
+        ]
+
 task jacocoCoverageReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
     afterEvaluate {
-        def debugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug")
-        def mainSrc = fileTree(dir: "${project.projectDir}/src/main/java")
-        sourceDirectories.setFrom(files([mainSrc]))
+        def debugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: excludes)
+        def mainSrc = "${project.projectDir}/src/main/java"
+        getSourceDirectories().setFrom(files([mainSrc]))
         classDirectories.setFrom(files([debugTree]))
         executionData.setFrom(fileTree(dir: "$buildDir", includes: [
                 "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
